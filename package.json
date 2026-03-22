@@ -4,7 +4,10 @@
   "description": "Projeto Interdisciplinar 4º Semestre Fatec",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx --watch --env-file=.env src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -13,9 +16,22 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/RobsonIssomoto/projeto-relatorio-estagio/issues"
   },
-  "homepage": "https://github.com/RobsonIssomoto/projeto-relatorio-estagio#readme"
+  "homepage": "https://github.com/RobsonIssomoto/projeto-relatorio-estagio#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.3.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
 }
