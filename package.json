@@ -1,0 +1,21 @@
+{
+  "name": "projeto-relatorio-estagio",
+  "version": "1.0.0",
+  "description": "Projeto Interdisciplinar 4º Semestre Fatec",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobsonIssomoto/projeto-relatorio-estagio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/RobsonIssomoto/projeto-relatorio-estagio/issues"
+  },
+  "homepage": "https://github.com/RobsonIssomoto/projeto-relatorio-estagio#readme"
+}
