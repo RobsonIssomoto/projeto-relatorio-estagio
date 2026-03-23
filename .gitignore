@@ -1,4 +1,16 @@
-node_modules
-dist
-build
-.env
+# --- GERAL --- #
+node_modules/
+dist/
+build/
+.DS_Store
+.vscode/
+
+# --- BACKEND --- #
+/backend/.env
+/backend/dist/
+
+# --- FRONTEND --- #
+/frontend/dist/
+/frontend/dist-ssr/
+/frontend/*.local
+*.log
