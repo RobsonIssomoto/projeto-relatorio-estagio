@@ -10,7 +10,7 @@ build/
 /backend/dist/
 
 # --- FRONTEND --- #
-/frontend/dist/
-/frontend/dist-ssr/
-/frontend/*.local
-*.log
+/frontend/dist/        <-- Ignora a pasta de build (gerada pelo npm run build)
+/frontend/dist-ssr/    <-- Ignora o build de Server Side Rendering (se houver)
+/frontend/*.local      <-- Ignora arquivos específicos do frontend como .env.local
+*.log                  <-- Ignora qualquer arquivo de log no projeto todo
