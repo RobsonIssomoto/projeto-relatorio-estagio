@@ -12,7 +12,6 @@ class App {
     this.server = express();
     this.middleware();
     this.routes();
-    this.database();
   }
 
   private middleware(): void {
@@ -23,14 +22,6 @@ class App {
 
   private routes(): void {
     this.server.use("/api/v1", routes);
-  }
-
-  private database(): void {
-    console.log("Preparando conexão com os bancos de dados...");
-    database.connect();
-    // No futuro, colocaremos aqui:
-    // conectarMongo();
-    // conectarSqlServer();
   }
 }
 

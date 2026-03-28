@@ -1,11 +1,14 @@
 import { Router } from "express";
+import relatorioRoutes from "./modules/relatorio/relatorio.routes.js";
 
-const routes = Router();
+const router = Router();
 
-routes.get("/teste", (request, response) => {
+router.get("/teste", (request, response) => {
   return response.status(200).json({
     message: "Endpoint de teste funcionando",
   });
 });
 
-export default routes;
+router.use("/relatorios", relatorioRoutes);
+
+export default router;
