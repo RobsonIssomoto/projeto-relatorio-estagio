@@ -22,12 +22,16 @@ class UsuarioController {
     }
   }
 
-  public async listarTodos(
+  public async findAll(
     request: Request,
     response: Response,
   ): Promise<Response> {
-    const usuarios = await usuarioService.listarTodos();
-    return response.status(200).json(usuarios);
+    try {
+      const usuarios = await usuarioService.findAll();
+      return response.status(200).json(usuarios);
+    } catch (error: any) {
+      return response.status(500).json({ erro: "Erro ao listar usuários" });
+    }
   }
 }
 

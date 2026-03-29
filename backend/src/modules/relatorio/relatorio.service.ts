@@ -1,6 +1,6 @@
 /*
 
-Papel da service
+Papel da Service
  
 Reponsável por:
     -Criar 
@@ -9,25 +9,22 @@ Reponsável por:
     -Atualizar 
     -Excluir 
 
-    Concentra as operações e regras de negócio relacionado ao módulo 
-    ------------------------------------------------------------------
-    O Service
-        -Não recebe req e res
-        -Não define rota
-        -Não conhece protocolo HTTP
-        -Responsável pela lógica
+Concentra as operações e regras de negócio relacionado ao módulo 
+------------------------------------------------------------------
+O Service
+    -Não recebe req e res
+    -Não define rota
+    -Não conhece protocolo HTTP
+    -Responsável pela lógica
 
 */
 
-import Relatorio from "./relatorio.model.js";
-import type {
-  ICreateRelatorioDTO,
-  IUpdateRelatorioDTO,
-} from "./relatorio.type.js";
+import relatorioModel from "./relatorio.model.js";
+import type { IRelatorio, ICreateRelatorioDTO } from "./relatorio.type.js";
 
 class RelatorioService {
   public async create(data: ICreateRelatorioDTO) {
-    const relatorio = await Relatorio.create({
+    const relatorio = await relatorioModel.create({
       aluno: data.aluno,
       mesReferencia: data.mesReferencia,
       atividades: data.atividades,
@@ -36,6 +33,10 @@ class RelatorioService {
     });
 
     return relatorio;
+  }
+
+  public async findAll(): Promise<IRelatorio[]> {
+    return await relatorioModel.find();
   }
 }
 
