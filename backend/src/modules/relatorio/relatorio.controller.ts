@@ -3,10 +3,17 @@ import relatorioService from "./relatorio.service.js";
 
 class RelatorioController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { aluno, mesReferencia, atividades, horasRealizadas, status } =
-      request.body;
+    const {
+      alunoId,
+      aluno,
+      mesReferencia,
+      atividades,
+      horasRealizadas,
+      status,
+    } = request.body;
 
     const relatorio = await relatorioService.create({
+      alunoId,
       aluno,
       mesReferencia,
       atividades,
