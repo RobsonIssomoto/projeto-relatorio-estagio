@@ -37,7 +37,7 @@ class UsuarioService {
     return usuarioSeguro;
   }
 
-  public async listarTodos(): Promise<Omit<IUsuario, "senhaHash">[]> {
+  public async findAll(): Promise<Omit<IUsuario, "senhaHash">[]> {
     const usuarios = await usuarioModel.findAll();
 
     // Remove o hash da senha de toda a lista antes de devolver para a tela

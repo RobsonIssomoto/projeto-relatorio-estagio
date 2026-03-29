@@ -22,6 +22,18 @@ class RelatorioController {
     });
     return response.status(201).json(relatorio);
   }
+
+  public async findAll(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    try {
+      const relatorios = await relatorioService.findAll();
+      return response.status(200).json(relatorios);
+    } catch (error: any) {
+      return response.status(500).json({ erro: "Erro ao listar relatórios" });
+    }
+  }
 }
 
 export default new RelatorioController();
