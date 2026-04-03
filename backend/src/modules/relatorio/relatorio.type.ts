@@ -1,8 +1,10 @@
-export interface IRelatorio extends Document {
-  alunoId: string;
+import type { Types } from "mongoose";
+
+export interface IRelatorio {
+  alunoId: Types.ObjectId;
   aluno: string;
   mesReferencia: string;
-  atividades: string[];
+  atividades?: string[];
   horasRealizadas: number;
   status: "Pendente" | "Aprovado" | "Revisar";
   createdAt: Date;
@@ -13,7 +15,7 @@ export interface ICreateRelatorioDTO {
   alunoId: string;
   aluno: string;
   mesReferencia: string;
-  atividades: string[];
+  atividades?: string[];
   horasRealizadas: number;
   status: "Pendente" | "Aprovado" | "Revisar";
 }

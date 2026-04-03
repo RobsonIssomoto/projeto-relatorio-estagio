@@ -2,6 +2,7 @@ import "dotenv/config";
 import app from "./app.js";
 import database from "./config/database.js";
 import relatorioRoutes from "./modules/relatorio/relatorio.routes.js";
+app.use("/relatorios", relatorioRoutes);
 
 const PORT = process.env.PORT || 3000;
 

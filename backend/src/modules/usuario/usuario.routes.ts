@@ -7,6 +7,6 @@ const usuarioRoutes = Router();
 usuarioRoutes.post("/", usuarioController.create);
 
 // Rota para listar (GET /api/v1/usuarios)
-usuarioRoutes.get("/", usuarioController.listarTodos);
+usuarioRoutes.get("/", usuarioController.findAll);
 
 export default usuarioRoutes;
