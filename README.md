@@ -54,29 +54,22 @@ Certifique-se de ter o Node.js instalado em sua máquina.
 
 ---
 
-🏗️ Novas Implementações Técnicas
-Segurança: Implementação de hashing de senhas utilizando a biblioteca bcrypt para garantir a proteção dos dados sensíveis dos usuários.
+## 🏗️ Novas Implementações Técnicas
 
-Arquitetura de Módulos: Migração da estrutura MVC global para uma organização baseada em módulos independentes (relatorio, usuario), facilitando a escalabilidade e manutenção.
-
-Persistência Poliglota: Estruturação do sistema para suportar múltiplos bancos de dados:
-
-MongoDB: Armazenamento de documentos flexíveis (Relatórios de Estágio).
-
-SQL Server (Em breve): Gestão de usuários e perfis de acesso (RBAC).
+- **Segurança:** Implementação de hashing de senhas utilizando a biblioteca bcrypt para garantir a proteção dos dados sensíveis dos usuários.
+- **Arquitetura de Módulos:** Migração da estrutura MVC global para uma organização baseada em módulos independentes (relatorio, usuario), facilitando a escalabilidade e manutenção.
+- **Persistência Poliglota:** Estruturação do sistema para suportar múltiplos bancos de dados:
+  - **MongoDB:** Armazenamento de documentos flexíveis (Relatórios de Estágio).
+  - **SQL Server (Em breve):** Gestão de usuários e perfis de acesso (RBAC).
 
 ---
-
-## 🔗 Próximos Passos e Roadmap
-
-Roadmap de Desenvolvimento
 
 ## 🚀 O que já foi implementado
 
 ### ⚙️ Back-end (Node.js & TypeScript)
 
 - [x] **Arquitetura MVC:** Separação clara de responsabilidades entre `Routes`, `Controllers` e `Services`.
-- [x] **Módulo de Relatórios:** Rotas `POST` e `GET` integradas com o **MongoDB Atlas** usando Mongoose.
+- [x] **Módulo de Relatórios:** CRUD Completo (Create, Read, Update, Delete) integrado ao MongoDB Atlas. Implementação de tipagem rígida com `Types.ObjectId` e proteção de integridade em rotas de atualização.
 - [x] **Módulo de Usuários:** Rotas `POST` e `GET` com persistência em memória e regras de negócio para criação de perfis.
 - [x] **Segurança:** Implementação de criptografia de senhas usando a biblioteca `bcrypt`.
 
@@ -85,17 +78,19 @@ Roadmap de Desenvolvimento
 - [x] **Setup Inicial:** Configuração do projeto utilizando Vite e React.
 - [x] **Tema Global (Material UI):** Criação de um tema customizado com as cores oficias da instituição (`fatec.main`).
 - [x] **Layout & Navegação:** Desenvolvimento de uma `Navbar` responsiva (com menu hamburguer lateral) e um container principal de layout flexível.
-- [x] **Telas de Autenticação:** Implementação da tela de **Cadastro** com renderização condicional, exibindo formulários dinâmicos e otimizados de acordo com o perfil selecionado (Estagiário ou Empresa).
+- [x] **Telas de Autenticação:** Implementação da tela de **Cadastro** com renderização condicional.
+- [x] **Componentização Avançada:** Refatoração de formulários complexos em subcomponentes isolados e criação de inputs customizados reutilizáveis (ex: `CampoSenha`).
+- [x] **UX e Validação Dinâmica:** Implementação de checklist visual de força de senha em tempo real (Regex) e validação de confirmação de senhas com gatilhos de foco (`onBlur`/`onFocus`).
 
 ---
 
 ## 🗺️ Próximos Passos (Roadmap)
 
+- [ ] **Front-end:** Integrar os formulários de Cadastro com a API Node.js utilizando o `Axios`.
 - [ ] **Back-end:** Substituir a persistência em memória dos Usuários pela conexão definitiva com o **SQL Server**.
 - [ ] **Back-end:** Implementação completa dos Perfis de Acesso (Estagiário, Empresa, Orientador e Admin).
-- [ ] **Front-end:** Integrar os formulários de Cadastro e Login com a API Node.js utilizando o `Axios`.
 - [ ] **Front-end:** Configurar o `React Router` para navegação fluida entre a Página Inicial, Login, Cadastro e Dashboards.
 
 ---
 
-Desenvolvido como parte do currículo de Desenvolvimento de Software Multiplataforma
+_Desenvolvido como parte do currículo de Desenvolvimento de Software Multiplataforma na FATEC São Paulo._
