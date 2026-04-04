@@ -3,6 +3,7 @@ import usuarioController from "./usuario.controller.js";
 
 const usuarioRoutes = Router();
 
+
 // Rota para cadastrar (POST /api/v1/usuarios)
 usuarioRoutes.post("/", usuarioController.create);
 

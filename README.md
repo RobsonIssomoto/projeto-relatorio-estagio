@@ -93,4 +93,4 @@ Certifique-se de ter o Node.js instalado em sua máquina.
 
 ---
 
-_Desenvolvido como parte do currículo de Desenvolvimento de Software Multiplataforma na FATEC São Paulo._
+_Desenvolvido como parte do currículo de Desenvolvimento de Software Multiplataforma na Fatec Atibaia._

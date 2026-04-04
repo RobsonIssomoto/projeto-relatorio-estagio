@@ -5,7 +5,7 @@ const relatorioSchema = new Schema<IRelatorio>(
   {
     alunoId: {
       type: Schema.Types.ObjectId,
-      ref: "Usuario", // O nome do seu model de Usuário
+      ref: "Usuario",
       required: true,
     },
     aluno: { type: String, required: true, trim: true },
