@@ -37,7 +37,6 @@ class UsuarioController {
           telefone,
         });
       } else if (perfilFormatado === "REPRESENTANTE") {
-        // A ponte da empresa!
         dadosPerfil = await empresaService.create({
           usuarioId: usuario.id,
           razaoSocial,
