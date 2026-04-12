@@ -3,7 +3,7 @@ import type { Express } from "express";
 import cors from "cors";
 import routes from "./routes.js";
 import database from "./config/database.js";
-// Aqui no futuro importaremos: import { conectarMongo } from './config/databaseMongo.js'
+// Aqui no futuro importar: import { conectarMongo } from './config/databaseMongo.js'
 
 class App {
   public server: Express;

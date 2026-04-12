@@ -8,7 +8,7 @@ export enum Perfil {
 
 export interface IUsuario {
   id: number;
-  email: string; // Adeus, login!
+  email: string;
   perfil: Perfil;
   senhaHash: string;
   createdAt: Date; // Padrão de mercado para dataCadastro
@@ -16,7 +16,7 @@ export interface IUsuario {
 }
 
 export interface ICreateUsuarioDTO {
-  email: string; // Adeus, login!
+  email: string;
   senhaEmTextoPlano: string;
   perfil: Perfil;
 }
