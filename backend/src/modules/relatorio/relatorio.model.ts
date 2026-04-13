@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import type { IRelatorio } from "./relatorio.type.js";
+import type { IRelatorio } from "./relatorio.types.js";
 
 const relatorioSchema = new Schema<IRelatorio>(
   {

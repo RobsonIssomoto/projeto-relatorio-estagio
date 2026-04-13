@@ -1,7 +1,7 @@
 import express from "express";
 import type { Express } from "express";
 import cors from "cors";
-import routes from "./routes.js";
+import routes from "./routes/routes.js";
 import database from "./config/database.js";
 // Aqui no futuro importar: import { conectarMongo } from './config/databaseMongo.js'
 

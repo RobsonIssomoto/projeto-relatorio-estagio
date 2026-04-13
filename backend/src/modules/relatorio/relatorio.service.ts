@@ -21,11 +21,7 @@ O Service
 
 import relatorioModel from "./relatorio.model.js";
 import { Types } from "mongoose";
-import type {
-  IRelatorio,
-  ICreateRelatorioDTO,
-  IUpdateRelatorioDTO,
-} from "./relatorio.type.js";
+import type { IRelatorio, ICreateRelatorioDTO, IUpdateRelatorioDTO } from "./relatorio.types.js";
 
 class RelatorioService {
   public async create(data: ICreateRelatorioDTO) {

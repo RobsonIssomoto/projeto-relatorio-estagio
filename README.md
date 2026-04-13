@@ -61,6 +61,8 @@ Certifique-se de ter o Node.js instalado em sua máquina.
 - **Persistência Poliglota:** Estruturação do sistema para suportar múltiplos bancos de dados:
   - **MongoDB:** Armazenamento de documentos flexíveis (Relatórios de Estágio).
   - **SQL Server (Em breve):** Gestão de usuários e perfis de acesso (RBAC).
+- **CSS Grid v6:** Migração do sistema de Grid legando para a nova sintaxe de `size` do Material UI v6, eliminando inconsistências de layout.
+- **Simetria de Dashboard:** Lógica de quebra de colunas (4 -> 2 -> 1) para evitar "cards órfãos" em resoluções intermediárias.
 
 ---
 
@@ -81,15 +83,19 @@ Certifique-se de ter o Node.js instalado em sua máquina.
 - [x] **Telas de Autenticação:** Implementação da tela de **Cadastro** com renderização condicional.
 - [x] **Componentização Avançada:** Refatoração de formulários complexos em subcomponentes isolados e criação de inputs customizados reutilizáveis (ex: `CampoSenha`).
 - [x] **UX e Validação Dinâmica:** Implementação de checklist visual de força de senha em tempo real (Regex) e validação de confirmação de senhas com gatilhos de foco (`onBlur`/`onFocus`).
+- [x] **Arquitetura de Layout Pro:** Implementação de `DashboardLayout` com _Mini Variant Drawer_ (sidebar retrátil) e persistência de estado.
+- [x] **Componentização de Alto Nível:** - `Header`: Barra superior com menu de usuário, avatar com cálculo de iniciais e ações de perfil/logout.
+  - `BannerPerfilAluno`: Visualização horizontal de dados acadêmicos inspirada no sistema SIGA da Fatec.
+  - `CardMetrica`: Cards de indicadores (KPIs) com suporte a tendências e ícones dinâmicos.
+- [x] **Responsividade Avançada:** Uso de **CSS Grid** com `minmax` e `auto-fit` para garantir que o dashboard se adapte perfeitamente de 1200px até telas de celular, mantendo a simetria visual.
 
 ---
 
 ## 🗺️ Próximos Passos (Roadmap)
 
-- [ ] **Front-end:** Integrar os formulários de Cadastro com a API Node.js utilizando o `Axios`.
-- [ ] **Back-end:** Substituir a persistência em memória dos Usuários pela conexão definitiva com o **SQL Server**.
-- [ ] **Back-end:** Implementação completa dos Perfis de Acesso (Estagiário, Empresa, Orientador e Admin).
-- [ ] **Front-end:** Configurar o `React Router` para navegação fluida entre a Página Inicial, Login, Cadastro e Dashboards.
+- [ ] **Lógica de Dados:** Integrar `React Hook Form` e `Zod` no formulário de "Nova Atividade".
+- [ ] **Integração API:** Conectar o fluxo de cadastro e login com o backend via `Axios`.
+- [ ] **Dashboards Dinâmicos:** Substituir os dados estáticos dos cards de métricas por chamadas reais à API.
 
 ---
 
