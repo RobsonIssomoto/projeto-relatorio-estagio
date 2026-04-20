@@ -18,14 +18,13 @@ O Service
     -Responsável pela lógica
 
 */
-
-import relatorioModel from "./relatorio.model.js";
 import { Types } from "mongoose";
+import Relatorio from "./relatorio.model.js";
 import type { IRelatorio, ICreateRelatorioDTO, IUpdateRelatorioDTO } from "./relatorio.types.js";
 
 class RelatorioService {
   public async create(data: ICreateRelatorioDTO) {
-    const relatorio = await relatorioModel.create({
+    const relatorio = await Relatorio.create({
       alunoId: new Types.ObjectId(data.alunoId),
       aluno: data.aluno,
       mesReferencia: data.mesReferencia,
@@ -38,22 +37,22 @@ class RelatorioService {
   }
 
   public async findAll(): Promise<IRelatorio[]> {
-    return await relatorioModel.find();
+    return await Relatorio.find();
   }
 
   public async findById(id: string) {
-    return await relatorioModel.findById(id);
+    return await Relatorio.findById(id);
   }
 
   public async update(id: string, data: IUpdateRelatorioDTO) {
-    return await relatorioModel.findByIdAndUpdate(id, data, {
+    return await Relatorio.findByIdAndUpdate(id, data, {
       returnDocument: "after", // Diz pro Mongoose devolver o objeto JÁ atualizado
       runValidators: true, // Diz pro Mongoose testar as regras (ex: se o status é "Aprovado" mesmo)
     });
   }
 
   public async delete(id: string) {
-    return await relatorioModel.findByIdAndDelete(id);
+    return await Relatorio.findByIdAndDelete(id);
   }
 }
 

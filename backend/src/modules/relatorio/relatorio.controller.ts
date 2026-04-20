@@ -3,42 +3,40 @@ import relatorioService from "./relatorio.service.js";
 
 class RelatorioController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const {
-      alunoId,
-      aluno,
-      mesReferencia,
-      atividades,
-      horasRealizadas,
-      status,
-    } = request.body;
+    try {
+      const { alunoId, aluno, mesReferencia, atividades, horasRealizadas, status } = request.body;
 
-    const relatorio = await relatorioService.create({
-      alunoId,
-      aluno,
-      mesReferencia,
-      atividades,
-      horasRealizadas,
-      status,
-    });
-    return response.status(201).json(relatorio);
+      const relatorio = await relatorioService.create({
+        alunoId,
+        aluno,
+        mesReferencia,
+        atividades,
+        horasRealizadas,
+        status,
+      });
+      return response.status(201).json(relatorio);
+    } catch (error) {
+      // Verifica se o erro é  uma instância da classe Error nativa do Node
+      if (error instanceof Error) {
+        return response.status(400).json({ erro: error.message });
+      }
+      return response.status(500).json({ erro: "Erro interno desconhecido ao salvar relatório." });
+    }
   }
-
-  public async findAll(
-    request: Request,
-    response: Response,
-  ): Promise<Response> {
+  public async findAll(request: Request, response: Response): Promise<Response> {
     try {
       const relatorios = await relatorioService.findAll();
       return response.status(200).json(relatorios);
-    } catch (error: any) {
-      return response.status(500).json({ erro: "Erro ao listar relatórios" });
+    } catch (error) {
+      // Verifica se o erro é  uma instância da classe Error nativa do Node
+      if (error instanceof Error) {
+        return response.status(400).json({ erro: error.message });
+      }
+      return response.status(500).json({ erro: "Erro interno desconhecido ao listar relatórios." });
     }
   }
 
-  public async findById(
-    request: Request,
-    response: Response,
-  ): Promise<Response> {
+  public async findById(request: Request, response: Response): Promise<Response> {
     const { id } = request.params ?? {};
     if (!id || typeof id !== "string") {
       return response.status(400).json({
@@ -52,8 +50,7 @@ class RelatorioController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params ?? {};
-    const { aluno, mesReferencia, atividades, horasRealizadas, status } =
-      request.body ?? {};
+    const { aluno, mesReferencia, atividades, horasRealizadas, status } = request.body ?? {};
 
     if (!id || typeof id !== "string") {
       return response.status(400).json({
