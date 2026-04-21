@@ -10,7 +10,13 @@ const relatorioSchema = new Schema<IRelatorio>(
     },
     aluno: { type: String, required: true, trim: true },
     mesReferencia: { type: String, required: true, trim: true },
-    atividades: [{ type: String, required: true }],
+    atividades: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Atividade",
+        required: true,
+      },
+    ],
     horasRealizadas: { type: Number, required: true },
     status: {
       type: String,
