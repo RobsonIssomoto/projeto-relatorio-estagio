@@ -7,5 +7,5 @@ export interface IEstagiario {
   createdAt: Date;
 }
 
-// O que precisamos para criar um (ignorando ID e data gerados pelo banco)
+// O que precisa para criar um (ignorando ID e data gerados pelo banco)
 export type ICreateEstagiarioDTO = Omit<IEstagiario, "id" | "createdAt">;

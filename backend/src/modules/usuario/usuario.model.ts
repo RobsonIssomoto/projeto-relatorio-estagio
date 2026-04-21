@@ -4,14 +4,12 @@ const tabelaUsuarios: IUsuario[] = [];
 let contadorId = 1;
 
 class UsuarioModel {
-  // Ignoramos id, createdAt e updatedAt na hora de receber os dados
-  public async create(
-    dadosMapeados: Omit<IUsuario, "id" | "createdAt" | "updatedAt">,
-  ): Promise<IUsuario> {
+  // Ignora id, createdAt e updatedAt na hora de receber os dados
+  public async create(dadosMapeados: Omit<IUsuario, "id" | "createdAt" | "updatedAt">): Promise<IUsuario> {
     const novoUsuario: IUsuario = {
       id: contadorId++,
       ...dadosMapeados,
-      createdAt: new Date(), // Preenchemos a data automaticamente aqui
+      createdAt: new Date(), // Preenche a data automaticamente
     };
 
     tabelaUsuarios.push(novoUsuario);

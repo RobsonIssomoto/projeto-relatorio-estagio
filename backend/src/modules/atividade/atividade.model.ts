@@ -28,6 +28,7 @@ const atividadeSchema = new Schema<IAtividade>(
     tecnologias: [
       {
         type: String,
+        required: true,
       },
     ],
     descricao: {

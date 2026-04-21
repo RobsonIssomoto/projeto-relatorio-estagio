@@ -1,5 +1,6 @@
 import { Router } from "express";
 import relatorioRoutes from "../modules/relatorio/relatorio.routes.js";
+import atividadeRoutes from "../modules/atividade/atividade.routes.js";
 import usuarioRoutes from "../modules/usuario/usuario.routes.js";
 import authRoutes from "../modules/auth/auth.routes.js";
 
@@ -12,6 +13,7 @@ router.get("/teste", (request, response) => {
 });
 
 router.use("/relatorios", relatorioRoutes);
+router.use("/atividades", atividadeRoutes);
 router.use("/usuarios", usuarioRoutes);
 router.use("/auth", authRoutes);
 
