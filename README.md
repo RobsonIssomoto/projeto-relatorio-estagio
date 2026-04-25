@@ -84,7 +84,8 @@ Certifique-se de ter o Node.js instalado em sua máquina.
 - [x] **Componentização Avançada:** Refatoração de formulários complexos em subcomponentes isolados e criação de inputs customizados reutilizáveis (ex: `CampoSenha`).
 - [x] **UX e Validação Dinâmica:** Implementação de checklist visual de força de senha em tempo real (Regex) e validação de confirmação de senhas com gatilhos de foco (`onBlur`/`onFocus`).
 - [x] **Arquitetura de Layout Pro:** Implementação de `DashboardLayout` com _Mini Variant Drawer_ (sidebar retrátil) e persistência de estado.
-- [x] **Componentização de Alto Nível:** - `Header`: Barra superior com menu de usuário, avatar com cálculo de iniciais e ações de perfil/logout.
+- [x] **Componentização de Alto Nível:**
+  - `Header`: Barra superior com menu de usuário, avatar com cálculo de iniciais e ações de perfil/logout.
   - `BannerPerfilAluno`: Visualização horizontal de dados acadêmicos inspirada no sistema SIGA da Fatec.
   - `CardMetrica`: Cards de indicadores (KPIs) com suporte a tendências e ícones dinâmicos.
 - [x] **Responsividade Avançada:** Uso de **CSS Grid** com `minmax` e `auto-fit` para garantir que o dashboard se adapte perfeitamente de 1200px até telas de celular, mantendo a simetria visual.
