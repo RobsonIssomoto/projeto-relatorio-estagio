@@ -9,7 +9,7 @@ function obterVariavelAmbiente(nomeDaVariavel: string): string {
   return valor;
 }
 
-// Exportamos um objeto limpo com todas as variáveis que o sistema vai usar
+// Exporta um objeto limpo com todas as variáveis que o sistema vai usar
 export const ENV = {
   //Função. O TypeScript agora tem 100% de certeza que SEGREDO_JWT é uma string.
   JWT_SECRET: obterVariavelAmbiente("JWT_SECRET"),

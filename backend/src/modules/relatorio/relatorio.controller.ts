@@ -25,10 +25,16 @@ class RelatorioController {
   }
   public async findAll(request: Request, response: Response): Promise<Response> {
     try {
-      const relatorios = await relatorioService.findAll();
+      // O "as string" obriga o TypeScript a confiar que isto é um texto único
+      const alunoId = request.params.alunoId as string;
+
+      // Cria o filtro garantindo o tipo correto
+      const filtro = alunoId ? { alunoId } : {};
+
+      const relatorios = await relatorioService.findAll(filtro);
+
       return response.status(200).json(relatorios);
     } catch (error) {
-      // Verifica se o erro é  uma instância da classe Error nativa do Node
       if (error instanceof Error) {
         return response.status(400).json({ erro: error.message });
       }

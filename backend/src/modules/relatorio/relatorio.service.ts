@@ -28,7 +28,7 @@ class RelatorioService {
       alunoId: new Types.ObjectId(data.alunoId),
       aluno: data.aluno,
       mesReferencia: data.mesReferencia,
-      atividades: data.atividades || [""],
+      atividades: data.atividades || [],
       horasRealizadas: data.horasRealizadas,
       status: data.status,
     });
@@ -36,11 +36,11 @@ class RelatorioService {
     return relatorio;
   }
 
-  public async findAll(): Promise<IRelatorio[]> {
-    return await Relatorio.find();
+  public async findAll(filtro: { alunoId?: string } = {}): Promise<IRelatorio[]> {
+    return await Relatorio.find(filtro);
   }
 
-  public async findById(id: string) {
+  public async findById(id: string): Promise<IRelatorio | null> {
     return await Relatorio.findById(id);
   }
 

@@ -8,7 +8,7 @@ Projeto desenvolvido para a disciplina de Projeto Integrador (PI) do 4º Semestr
 
 O repositório está organizado em duas frentes principais:
 
-- /backend: API REST desenvolvida com Node.js, TypeScript e persistência no MongoDB Atlas. Segue padrões de POO (Singleton) e MVC.
+- /backend: API REST desenvolvida com Node.js, Express, TypeScript e persistência no MongoDB Atlas. Segue padrões de arquitetura limpa (MVC) e referências NoSQL (Mongoose Refs).
 - /frontend: Interface SPA (Single Page Application) desenvolvida com React, Vite, TypeScript e Material UI.
 
 ---
@@ -94,8 +94,9 @@ Certifique-se de ter o Node.js instalado em sua máquina.
 ## 🗺️ Próximos Passos (Roadmap)
 
 - [ ] **Lógica de Dados:** Integrar `React Hook Form` e `Zod` no formulário de "Nova Atividade".
-- [ ] **Integração API:** Conectar o fluxo de cadastro e login com o backend via `Axios`.
-- [ ] **Dashboards Dinâmicos:** Substituir os dados estáticos dos cards de métricas por chamadas reais à API.
+- [ ] **Painel do Supervisor:** Interface para visualização, aprovação ou devolução (com observações) de relatórios pendentes.
+- [ ] **Geração de PDF:** Implementação de exportação dos relatórios aprovados para formato PDF pronto para assinatura.
+- [ ] **Integração Legada (C# & SQL):** Conexão com a base de dados SQL/C# existente para sincronização de cadastros de empresas e supervisores.
 
 ---
 

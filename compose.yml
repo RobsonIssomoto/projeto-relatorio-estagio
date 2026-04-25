@@ -1,5 +1,5 @@
 services:
-  # 1. O BANCO DE DADOS
+  # 1. O BANCO DE DADOS LOCAL Notebook Fatec)
   db:
     image: mongo:latest
     ports:
@@ -14,20 +14,16 @@ services:
       - "3000:3000"
     depends_on:
       - db
-    environment:
-      # O Docker vai criar essa variável de ambiente lá dentro do container
-      - MONGO_URI=mongodb://db:27017/relatorio_estagios
-
+    # O Docker respeita  o que estiver no .env
+    env_file:
+      - ./backend/.env
     develop:
-      # --- CONFIGURAÇÃO DO WATCH PARA A API ---
       watch:
-        # Regra 1: Se mudar código, apenas sincronize (rápido)
         - action: sync
           path: ./backend
           target: /app
           ignore:
             - node_modules/
-        # Regra 2: Se mudar as dependências, reconstrua tudo
         - action: rebuild
           path: ./backend/package.json
 
@@ -38,19 +34,16 @@ services:
       - "5173:5173"
     depends_on:
       - backend
-    # --- CONFIGURAÇÃO DO WATCH PARA O REACT ---
     develop:
       watch:
-        # Regra 1: Se mudar código, apenas sincronize (rápido)
         - action: sync
           path: ./frontend
           target: /app
           ignore:
             - node_modules/
-        # Regra 2: Se mudar as dependências, reconstrua tudo
         - action: rebuild
           path: ./frontend/package.json
 
-# Configuração do "Disco Rígido" externo
+# Define onde o banco de dados local vai salvar os arquivos no seu PC
 volumes:
   mongo_dados:
