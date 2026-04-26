@@ -1,28 +1,20 @@
-import type { IUsuario } from "./usuario.type.js";
+import { Schema, model } from "mongoose";
+import type { IUsuario } from "./usuario.types.js";
 
-const tabelaUsuarios: IUsuario[] = [];
-let contadorId = 1;
+const UsuarioSchema = new Schema<IUsuario>(
+  {
+    email: { type: String, required: true, unique: true },
+    senhaHash: { type: String, required: true },
+    perfil: { type: Number, required: true }, // Armazena o enum como número
+  },
+  {
+    timestamps: true, // Adiciona createdAt e updatedAt automaticamente
+    versionKey: false, // Remove o campo __v que o Mongoose cria por padrão
+  },
+);
 
-class UsuarioModel {
-  // Ignora id, createdAt e updatedAt na hora de receber os dados
-  public async create(dadosMapeados: Omit<IUsuario, "id" | "createdAt" | "updatedAt">): Promise<IUsuario> {
-    const novoUsuario: IUsuario = {
-      id: contadorId++,
-      ...dadosMapeados,
-      createdAt: new Date(), // Preenche a data automaticamente
-    };
+// O Mongoose já fornece métodos como .create(), .findOne(), .find()
+// Então não precisa criar a classe UsuarioModel com métodos manuais como antes.
+const UsuarioModel = model<IUsuario>("Usuario", UsuarioSchema);
 
-    tabelaUsuarios.push(novoUsuario);
-    return novoUsuario;
-  }
-
-  public async findByEmail(email: string): Promise<IUsuario | undefined> {
-    return tabelaUsuarios.find((usuario) => usuario.email === email);
-  }
-
-  public async findAll(): Promise<IUsuario[]> {
-    return tabelaUsuarios;
-  }
-}
-
-export default new UsuarioModel();
+export default UsuarioModel;

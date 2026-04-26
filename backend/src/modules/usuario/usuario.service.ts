@@ -1,21 +1,17 @@
 import bcrypt from "bcrypt";
-import usuarioModel from "./usuario.model.js";
-import type { IUsuario, ICreateUsuarioDTO } from "./usuario.type.js";
-import { Perfil } from "./usuario.type.js";
+import UsuarioModel from "./usuario.model.js"; // Importa o modelo do Mongoose
+import type { IUsuario, ICreateUsuarioDTO } from "./usuario.types.js";
+import { Perfil } from "./usuario.types.js";
 
 class UsuarioService {
-  public async create(
-    data: ICreateUsuarioDTO,
-  ): Promise<Omit<IUsuario, "senhaHash">> {
+  public async create(data: ICreateUsuarioDTO): Promise<Omit<IUsuario, "senhaHash">> {
     // 1. Regra de Negócio: Bloquear criação de perfis internos por vias públicas
     if (data.perfil === Perfil.Admin || data.perfil === Perfil.Orientador) {
-      throw new Error(
-        "Perfis de Admin e Orientador não podem ser criados por esta rota.",
-      );
+      throw new Error("Perfis de Admin e Orientador não podem ser criados por esta rota.");
     }
 
     // 2. Regra de Negócio: E-mail único
-    const emailExiste = await usuarioModel.findByEmail(data.email);
+    const emailExiste = await UsuarioModel.findOne({ email: data.email });
     if (emailExiste) {
       throw new Error("Este e-mail já está em uso.");
     }
@@ -23,28 +19,25 @@ class UsuarioService {
     // 3. Criptografia da Senha (A mágica do seu antigo SetSenhaHash)
     const saltRounds = 10;
     const hash = await bcrypt.hash(data.senhaEmTextoPlano, saltRounds);
-    console.log("Olha a senha criptografada aqui:", hash);
+    console.log("Senha criptografada: ", hash);
 
-    // 4. Envia os dados validados e seguros para a Model salvar
-    const novoUsuario = await usuarioModel.create({
+    // 4. O Mongoose cria e já salva no banco
+    const novoUsuario = await UsuarioModel.create({
       email: data.email,
       perfil: data.perfil,
       senhaHash: hash,
     });
 
-    // 5. Retorna o usuário criado, mas arranca a senha do objeto por segurança
-    const { senhaHash, ...usuarioSeguro } = novoUsuario;
+    // O Mongoose retorna um Documento. Para remover campos, é melhor converter para objeto puro (lean/toObject)
+    const usuarioObjeto = novoUsuario.toObject() as IUsuario;
+    const { senhaHash, ...usuarioSeguro } = usuarioObjeto;
+
     return usuarioSeguro;
   }
 
   public async findAll(): Promise<Omit<IUsuario, "senhaHash">[]> {
-    const usuarios = await usuarioModel.findAll();
-
-    // Remove o hash da senha de toda a lista antes de devolver para a tela
-    return usuarios.map((usuario) => {
-      const { senhaHash, ...usuarioSeguro } = usuario;
-      return usuarioSeguro;
-    });
+    const usuarios = await UsuarioModel.find().lean<IUsuario[]>();
+    return usuarios.map(({ senhaHash, ...usuarioSeguro }) => usuarioSeguro);
   }
 }
 

@@ -7,7 +7,7 @@ export enum Perfil {
 }
 
 export interface IUsuario {
-  id: number;
+  _id: string; // O MongoDB usa _id como padrão
   email: string;
   perfil: Perfil;
   senhaHash: string;
