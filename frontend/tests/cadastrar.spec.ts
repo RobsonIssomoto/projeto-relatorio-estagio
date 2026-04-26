@@ -9,7 +9,7 @@ test("cadastrar estagiário", async ({ page }) => {
   await page.getByRole("button", { name: "ESTAGIÁRIO sou aluno e vou" }).click();
   await expect(page.getByRole("heading", { name: "CADASTRO DE ESTAGIÁRIO" })).toBeVisible();
   await page.getByRole("textbox", { name: "Nome completo" }).fill("Robson Issomoto");
-  await page.getByRole("textbox", { name: "CPF" }).fill("38933728813");
+  await page.getByRole("textbox", { name: "CPF" }).fill("30499696018");
   await page.getByRole("textbox", { name: "Telefone" }).fill("11912345678");
   await page.getByRole("textbox", { name: "E-mail" }).fill(email);
   await page.getByRole("textbox", { name: "Senha", exact: true }).fill("Fatec@2026");
