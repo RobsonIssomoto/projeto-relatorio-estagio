@@ -1,16 +1,16 @@
 import estagiarioModel from "./estagiario.model.js";
-import type { ICreateEstagiarioDTO } from "./estagiario.types.js";
+import type { ICreateEstagiarioDTO, IEstagiario } from "./estagiario.types.js";
 
 class EstagiarioService {
-  public async create(dados: ICreateEstagiarioDTO) {
-    // Se no futuro precisar validar regras (ex: CPF válido), o código entra aqui
-
-    // O Service passa os dados para a Model (que guarda no array/banco)
+  public async create(dados: ICreateEstagiarioDTO): Promise<IEstagiario> {
+    // O Mongoose cria e salva no MongoDB
     const novoEstagiario = await estagiarioModel.create(dados);
 
-    console.log("Perfil de Estagiário criado com sucesso:", novoEstagiario);
+    return novoEstagiario.toObject() as IEstagiario;
+  }
 
-    return novoEstagiario;
+  public async findByUsuarioId(usuarioId: string): Promise<IEstagiario | null> {
+    return await estagiarioModel.findOne({ usuarioId }).lean<IEstagiario>();
   }
 }
 

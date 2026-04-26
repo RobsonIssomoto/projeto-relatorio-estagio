@@ -1,11 +1,23 @@
+import { Types } from "mongoose";
+
 export interface IEstagiario {
-  id: number;
-  usuarioId: number; // A chave estrangeira que liga ao login!
+  _id: string;
+  usuarioId: Types.ObjectId; // ID do login vinculado
   nome: string;
   cpf: string;
   telefone: string;
+  vinculoAtual: {
+    empresaId: string | null;
+    supervisorId: string | null;
+    status: "INATIVO" | "ATIVO" | "FINALIZADO";
+  };
   createdAt: Date;
+  updatedAt: Date;
 }
 
-// O que precisa para criar um (ignorando ID e data gerados pelo banco)
-export type ICreateEstagiarioDTO = Omit<IEstagiario, "id" | "createdAt">;
+export type ICreateEstagiarioDTO = {
+  usuarioId: string;
+  nome: string;
+  cpf: string;
+  telefone: string;
+};

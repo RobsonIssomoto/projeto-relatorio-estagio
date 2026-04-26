@@ -1,19 +1,16 @@
-import type { IEmpresa, ICreateEmpresaDTO } from "./empresa.types.js";
+import { Schema, model } from "mongoose";
+import type { IEmpresa } from "./empresa.types.js";
 
-const tabelaEmpresas: IEmpresa[] = [];
-let contadorId = 1;
+const EmpresaSchema = new Schema<IEmpresa>(
+  {
+    usuarioId: { type: Schema.Types.ObjectId, ref: "Usuario", required: true },
+    razaoSocial: { type: String, required: true },
+    cnpj: { type: String, required: true },
+    responsavel: { type: String, required: true },
+    telefone: { type: String, required: true },
+  },
+  { timestamps: true, versionKey: false },
+);
 
-class EmpresaModel {
-  public async create(dados: ICreateEmpresaDTO): Promise<IEmpresa> {
-    const novaEmpresa: IEmpresa = {
-      id: contadorId++,
-      ...dados,
-      createdAt: new Date(),
-    };
-
-    tabelaEmpresas.push(novaEmpresa);
-    return novaEmpresa;
-  }
-}
-
-export default new EmpresaModel();
+// Força o nome "empresas" no final para o MongoDB criar a collection
+export default model<IEmpresa>("Empresa", EmpresaSchema, "empresas");

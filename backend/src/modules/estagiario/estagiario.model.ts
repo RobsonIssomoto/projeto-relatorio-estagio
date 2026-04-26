@@ -1,23 +1,19 @@
-import type { IEstagiario, ICreateEstagiarioDTO } from "./estagiario.types.js";
+import { Schema, model } from "mongoose";
+import type { IEstagiario } from "./estagiario.types.js";
 
-const tabelaEstagiarios: IEstagiario[] = [];
-let contadorId = 1;
+const EstagiarioSchema = new Schema<IEstagiario>(
+  {
+    usuarioId: { type: Schema.Types.ObjectId, ref: "Usuario", required: true },
+    nome: { type: String, required: true },
+    cpf: { type: String, required: true },
+    telefone: { type: String, required: true },
+    vinculoAtual: {
+      empresaId: { type: Schema.Types.ObjectId, ref: "Empresa", default: null },
+      supervisorId: { type: Schema.Types.ObjectId, ref: "Usuario", default: null },
+      status: { type: String, enum: ["INATIVO", "ATIVO", "FINALIZADO"], default: "INATIVO" },
+    },
+  },
+  { timestamps: true, versionKey: false },
+);
 
-class EstagiarioModel {
-  public async create(dados: ICreateEstagiarioDTO): Promise<IEstagiario> {
-    const novoEstagiario: IEstagiario = {
-      id: contadorId++,
-      ...dados,
-      createdAt: new Date(),
-    };
-
-    tabelaEstagiarios.push(novoEstagiario);
-    return novoEstagiario;
-  }
-
-  public async findByUsuarioId(usuarioId: number): Promise<IEstagiario | undefined> {
-    return tabelaEstagiarios.find((est) => est.usuarioId === usuarioId);
-  }
-}
-
-export default new EstagiarioModel();
+export default model<IEstagiario>("Estagiario", EstagiarioSchema);

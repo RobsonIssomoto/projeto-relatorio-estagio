@@ -1,11 +1,20 @@
+import { Types } from "mongoose";
+
 export interface IEmpresa {
-  id: number;
-  usuarioId: number; // A ponte para o login
+  _id: string;
+  usuarioId: Types.ObjectId; // Referência ao Login
   razaoSocial: string;
   cnpj: string;
-  telefone: string;
   responsavel: string;
+  telefone: string;
   createdAt: Date;
+  updatedAt: Date;
 }
 
-export type ICreateEmpresaDTO = Omit<IEmpresa, "id" | "createdAt">;
+export type ICreateEmpresaDTO = {
+  usuarioId: string;
+  razaoSocial: string;
+  cnpj: string;
+  responsavel: string;
+  telefone: string;
+};
