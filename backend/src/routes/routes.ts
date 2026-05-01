@@ -3,6 +3,7 @@ import relatorioRoutes from "../modules/relatorio/relatorio.routes.js";
 import atividadeRoutes from "../modules/atividade/atividade.routes.js";
 import usuarioRoutes from "../modules/usuario/usuario.routes.js";
 import authRoutes from "../modules/auth/auth.routes.js";
+import authSqlRoutes from "../modules/auth/authSql.routes.js";
 
 const router = Router();
 
@@ -15,6 +16,8 @@ router.get("/teste", (request, response) => {
 router.use("/relatorios", relatorioRoutes);
 router.use("/atividades", atividadeRoutes);
 router.use("/usuarios", usuarioRoutes);
+
+router.use("/auth/sql", authSqlRoutes);
 router.use("/auth", authRoutes);
 
 export default router;

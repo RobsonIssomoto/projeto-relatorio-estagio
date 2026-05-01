@@ -15,4 +15,11 @@ export const ENV = {
   JWT_SECRET: obterVariavelAmbiente("JWT_SECRET"),
   MONGO_URI: obterVariavelAmbiente("MONGO_URI"),
   PORT: obterVariavelAmbiente("PORT") || "3000",
+
+  //Variáveis do SQL Server padronizados
+
+  DB_USER: obterVariavelAmbiente("DB_USER"),
+  DB_PASSWORD: obterVariavelAmbiente("DB_PASSWORD"),
+  DB_DATABASE: obterVariavelAmbiente("DB_DATABASE"),
+  DB_SERVER: obterVariavelAmbiente("DB_SERVER"),
 };

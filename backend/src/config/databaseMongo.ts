@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import { ENV } from "./env.js";
 
-class Database {
+class DatabaseMongo {
   public async connect(): Promise<void> {
     try {
-      await mongoose.connect(process.env.MONGO_URI as string);
+      await mongoose.connect(ENV.MONGO_URI);
       console.log("MongoDB conectado com sucesso!");
     } catch (error) {
       console.error("Erro ao conectar ao MongoDB", error);
@@ -12,4 +13,4 @@ class Database {
   }
 }
 
-export default new Database();
+export default new DatabaseMongo();
