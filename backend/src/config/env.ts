@@ -22,4 +22,7 @@ export const ENV = {
   DB_PASSWORD: obterVariavelAmbiente("DB_PASSWORD"),
   DB_DATABASE: obterVariavelAmbiente("DB_DATABASE"),
   DB_SERVER: obterVariavelAmbiente("DB_SERVER"),
+
+  //Variável do Prisma
+  DATABASE_URL: obterVariavelAmbiente("DATABASE_URL"),
 };

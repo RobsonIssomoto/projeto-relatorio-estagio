@@ -1,0 +1,144 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlserver"
+}
+
+model EFMigrationsHistory {
+    MigrationId    String @id(map: "PK___EFMigrationsHistory") @db.NVarChar(150)
+    ProductVersion String @db.NVarChar(32)
+
+    @@map("__EFMigrationsHistory")
+}
+
+model Empresas {
+    Id                  Int                   @id(map: "PK_Empresas") @default(autoincrement())
+    Nome                String                @db.NVarChar(Max)
+    CNPJ                String                @db.NVarChar(Max)
+    Email               String                @default("N'", map: "DF__Empresas__Email__4D94879B") @db.NVarChar(Max)
+    DataAtualizacao     DateTime?
+    DataCadastro        DateTime              @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Empresas__DataCa__43D61337")
+    RazaoSocial         String                @default("N'", map: "DF__Empresas__RazaoS__44CA3770") @db.NVarChar(Max)
+    Telefone            String?               @db.NVarChar(Max)
+    UsuarioId           Int                   @default(0, map: "DF__Empresas__Usuari__46B27FE2")
+    Usuarios            Usuarios              @relation(fields: [UsuarioId], references: [Id], onUpdate: NoAction, map: "FK_Empresas_Usuarios_UsuarioId")
+    SolicitacoesEstagio SolicitacoesEstagio[]
+    Supervisores        Supervisores[]
+
+    @@index([UsuarioId], map: "IX_Empresas_UsuarioId")
+}
+
+model Estagiarios {
+    Id                  Int                   @id(map: "PK_Estagiarios") @default(autoincrement())
+    Nome                String                @db.NVarChar(Max)
+    CPF                 String                @unique(map: "IX_Estagiarios_CPF") @db.NVarChar(450)
+    Telefone            String?               @db.NVarChar(Max)
+    Email               String                @db.NVarChar(Max)
+    DataCadastro        DateTime
+    DataAtualizacao     DateTime?
+    UsuarioId           Int
+    NomeCurso           String?               @db.NVarChar(Max)
+    Usuarios            Usuarios              @relation(fields: [UsuarioId], references: [Id], onUpdate: NoAction, map: "FK_Estagiarios_Usuarios_UsuarioId")
+    SolicitacoesEstagio SolicitacoesEstagio[]
+
+    @@index([UsuarioId], map: "IX_Estagiarios_UsuarioId")
+}
+
+model Orientadores {
+    Id                Int                 @id(map: "PK_Orientadores") @default(autoincrement())
+    Nome              String              @db.NVarChar(Max)
+    CPF               String              @db.NVarChar(Max)
+    Telefone          String?             @db.NVarChar(Max)
+    Email             String              @db.NVarChar(Max)
+    Departamento      String              @db.NVarChar(Max)
+    DataCadastro      DateTime
+    DataAtualizacao   DateTime?
+    UsuarioId         Int
+    Usuarios          Usuarios            @relation(fields: [UsuarioId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_Orientadores_Usuarios_UsuarioId")
+    TermosCompromisso TermosCompromisso[]
+
+    @@index([UsuarioId], map: "IX_Orientadores_UsuarioId")
+}
+
+model SolicitacoesEstagio {
+    Id                Int                @id(map: "PK_SolicitacoesEstagio") @default(autoincrement())
+    DataSubmissao     DateTime
+    Observacao        String?            @db.NVarChar(Max)
+    Status            Int?
+    Email             String?            @db.NVarChar(Max)
+    Token             String?            @db.NVarChar(Max)
+    EstagiarioId      Int
+    EmpresaId         Int?
+    Empresas          Empresas?          @relation(fields: [EmpresaId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SolicitacoesEstagio_Empresas_EmpresaId")
+    Estagiarios       Estagiarios        @relation(fields: [EstagiarioId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_SolicitacoesEstagio_Estagiarios_EstagiarioId")
+    TermosCompromisso TermosCompromisso?
+
+    @@index([EmpresaId], map: "IX_SolicitacoesEstagio_EmpresaId")
+    @@index([EstagiarioId], map: "IX_SolicitacoesEstagio_EstagiarioId")
+}
+
+model Supervisores {
+    Id                Int                 @id(map: "PK_Supervisores") @default(autoincrement())
+    Nome              String              @db.NVarChar(Max)
+    CPF               String              @db.NVarChar(Max)
+    Cargo             String              @db.NVarChar(Max)
+    EmpresaId         Int                 @default(0, map: "DF__Superviso__Empre__3493CFA7")
+    Email             String?             @db.NVarChar(Max)
+    Telefone          String              @default("N'", map: "DF__Superviso__Telef__4E53A1AA") @db.NVarChar(Max)
+    UsuarioId         Int                 @default(0, map: "DF__Superviso__Usuar__671F4F74")
+    Empresas          Empresas            @relation(fields: [EmpresaId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_Supervisores_Empresas_EmpresaId")
+    Usuarios          Usuarios            @relation(fields: [UsuarioId], references: [Id], onUpdate: NoAction, map: "FK_Supervisores_Usuarios_UsuarioId")
+    TermosCompromisso TermosCompromisso[]
+
+    @@index([EmpresaId], map: "IX_Supervisores_EmpresaId")
+    @@index([UsuarioId], map: "IX_Supervisores_UsuarioId")
+}
+
+model sysdiagrams {
+    name         String @db.NVarChar(128)
+    principal_id Int
+    diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B611EEB6A2F") @default(autoincrement())
+    version      Int?
+    definition   Bytes?
+
+    @@unique([principal_id, name], map: "UK_principal_name")
+}
+
+model TermosCompromisso {
+    Id                   Int                 @id(map: "PK_TermosCompromisso") @default(autoincrement())
+    CargaHoraria         Int?
+    ValorBolsa           Float?
+    DataInicio           DateTime?
+    DataFim              DateTime?
+    NumeroApolice        String?             @db.NVarChar(Max)
+    NomeSeguradora       String?             @db.NVarChar(Max)
+    SolicitacaoEstagioId Int                 @unique(map: "IX_TermosCompromisso_SolicitacaoEstagioId")
+    OrientadorId         Int?
+    Justificativa        String?             @db.NVarChar(Max)
+    PlanoDeAtividades    String?             @db.NVarChar(Max)
+    SupervisorId         Int?
+    CaminhoArquivo       String?             @db.NVarChar(Max)
+    NomeArquivo          String?             @db.NVarChar(Max)
+    Orientadores         Orientadores?       @relation(fields: [OrientadorId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TermosCompromisso_Orientadores_OrientadorId")
+    SolicitacoesEstagio  SolicitacoesEstagio @relation(fields: [SolicitacaoEstagioId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_TermosCompromisso_SolicitacoesEstagio_SolicitacaoEstagioId")
+    Supervisores         Supervisores?       @relation(fields: [SupervisorId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TermosCompromisso_Supervisores_SupervisorId")
+
+    @@index([OrientadorId], map: "IX_TermosCompromisso_OrientadorId")
+    @@index([SupervisorId], map: "IX_TermosCompromisso_SupervisorId")
+}
+
+model Usuarios {
+    Id              Int            @id(map: "PK_Usuarios") @default(autoincrement())
+    Login           String         @unique(map: "IX_Usuarios_Login") @db.NVarChar(450)
+    Senha           String         @db.NVarChar(Max)
+    Email           String         @unique(map: "IX_Usuarios_Email") @db.NVarChar(450)
+    Perfil          Int
+    DataCadastro    DateTime       @default(now())
+    DataAtualizacao DateTime?
+    Empresas        Empresas[]
+    Estagiarios     Estagiarios[]
+    Orientadores    Orientadores[]
+    Supervisores    Supervisores[]
+}
