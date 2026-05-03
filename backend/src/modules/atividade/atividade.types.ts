@@ -1,8 +1,8 @@
 import type { Types } from "mongoose";
 
 export interface IAtividade {
-  alunoId: Types.ObjectId;
-  relatorioId?: Types.ObjectId;
+  alunoId: number;
+  relatorioId?: string;
   titulo: string;
   dataAtividade: Date;
   horas: number;
@@ -13,7 +13,7 @@ export interface IAtividade {
 }
 
 export interface ICreateAtividadeDTO {
-  alunoId: string;
+  alunoId: number;
   titulo: string;
   dataAtividade: Date;
   horas: number;

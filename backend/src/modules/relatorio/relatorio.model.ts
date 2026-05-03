@@ -4,16 +4,16 @@ import type { IRelatorio } from "./relatorio.types.js";
 const relatorioSchema = new Schema<IRelatorio>(
   {
     alunoId: {
-      type: Schema.Types.ObjectId,
-      ref: "Usuario",
+      type: Number, // 🚨 Aceita o ID numérico do SQL Server
       required: true,
+      // Remove o ref: "Usuario" porque o usuário não está mais no Mongo
     },
     aluno: { type: String, required: true, trim: true },
     mesReferencia: { type: String, required: true, trim: true },
     atividades: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Atividade",
+        ref: "Atividade", // As atividades continuam com ref, pois estão no MongoDB!
         required: true,
       },
     ],

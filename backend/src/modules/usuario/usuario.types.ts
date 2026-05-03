@@ -1,22 +1,32 @@
-export enum Perfil {
-  Admin = 1,
-  Estagiario = 2,
-  Representante = 3,
-  Supervisor = 4,
-  Orientador = 5,
+// 1. Dados específicos do Estagiário
+export interface DadosEstagiario {
+  Nome: string;
+  CPF: string;
+  Telefone?: string;
+  NomeCurso?: string;
 }
 
-export interface IUsuario {
-  _id: string; // O MongoDB usa _id como padrão
-  email: string;
-  perfil: Perfil;
-  senhaHash: string;
-  createdAt: Date; // Padrão de mercado para dataCadastro
-  updatedAt?: Date; // Padrão de mercado para dataAtualizacao
+// 2. Dados específicos da Empresa/Representante
+export interface DadosEmpresa {
+  Nome: string; // Nome do Representante
+  CNPJ: string;
+  RazaoSocial?: string;
+  Telefone?: string;
 }
 
-export interface ICreateUsuarioDTO {
-  email: string;
-  senhaEmTextoPlano: string;
-  perfil: Perfil;
+// 3. O DTO Principal
+// O React manda tudo no mesmo corpo (req.body)
+export interface CriarUsuarioDTO {
+  Login: string;
+  Senha: string;
+  Email: string;
+  Perfil: number;
+
+  // Campos mistos (opcionais, pois variam de acordo com o Perfil)
+  Nome: string;
+  CPF?: string;
+  CNPJ?: string;
+  Telefone?: string;
+  RazaoSocial?: string;
+  NomeCurso?: string;
 }

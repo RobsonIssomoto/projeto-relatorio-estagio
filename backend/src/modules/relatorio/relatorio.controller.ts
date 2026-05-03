@@ -1,44 +1,52 @@
 import type { Request, Response } from "express";
+import type { AuthRequest } from "../../middlewares/auth.middleware.js";
 import relatorioService from "./relatorio.service.js";
 
 class RelatorioController {
-  public async create(request: Request, response: Response): Promise<Response> {
+  public async create(request: AuthRequest, response: Response): Promise<Response> {
     try {
-      const { alunoId, aluno, mesReferencia, atividades, horasRealizadas, status } = request.body;
+      // 1. Pega o mês que veio do ModalGerarRelatorio
+      const { mesReferencia } = request.body;
 
-      const relatorio = await relatorioService.create({
-        alunoId,
-        aluno,
-        mesReferencia,
-        atividades,
-        horasRealizadas,
-        status,
-      });
-      return response.status(201).json(relatorio);
-    } catch (error) {
-      // Verifica se o erro é  uma instância da classe Error nativa do Node
-      if (error instanceof Error) {
-        return response.status(400).json({ erro: error.message });
+      // 2. Pega o ID  que veio do seu Token JWT
+      const alunoId = request.usuarioLogado?.id;
+
+      if (!alunoId) {
+        return response.status(401).json({ erro: "Usuário não autenticado." });
       }
-      return response.status(500).json({ erro: "Erro interno desconhecido ao salvar relatório." });
+
+      if (!mesReferencia) {
+        return response.status(400).json({ erro: "O mês de referência é obrigatório." });
+      }
+
+      // 3. Chama o Service passando os dois parâmetros (ID e Mês)
+      // A lógica de somar horas e buscar o Nome agora acontece lá dentro!
+      const relatorio = await relatorioService.create(Number(alunoId), mesReferencia);
+
+      return response.status(201).json(relatorio);
+    } catch (error: any) {
+      console.error("Erro ao criar relatório:", error);
+
+      // Retorna a mensagem real do erro para ajudar no debug
+      return response.status(400).json({
+        erro: "Falha ao gerar relatório.",
+        detalhes: error.message,
+      });
     }
   }
+
   public async findAll(request: Request, response: Response): Promise<Response> {
     try {
-      // O "as string" obriga o TypeScript a confiar que isto é um texto único
-      const alunoId = request.params.alunoId as string;
-
+      const alunoId = request.params.alunoId;
       // Cria o filtro garantindo o tipo correto
-      const filtro = alunoId ? { alunoId } : {};
-
+      const filtro = alunoId ? { alunoId: Number(alunoId) } : {};
       const relatorios = await relatorioService.findAll(filtro);
-
       return response.status(200).json(relatorios);
     } catch (error) {
       if (error instanceof Error) {
         return response.status(400).json({ erro: error.message });
       }
-      return response.status(500).json({ erro: "Erro interno desconhecido ao listar relatórios." });
+      return response.status(500).json({ erro: "Erro interno  ao listar relatórios." });
     }
   }
 
@@ -64,7 +72,6 @@ class RelatorioController {
       });
     }
     const relatorio = await relatorioService.update(id, {
-      //aluno não consegue alterar o nome, criar regra de negócio que alteração deverá ser solicitada para ADM
       mesReferencia,
       atividades,
       horasRealizadas,
@@ -72,6 +79,23 @@ class RelatorioController {
     });
 
     return response.status(200).json(relatorio);
+  }
+
+  public async findByUser(request: AuthRequest, response: Response) {
+    try {
+      const usuarioId = request.usuarioLogado?.id;
+
+      if (!usuarioId) {
+        return response.status(401).json({ erro: "Usuário não identificado." });
+      }
+
+      const relatorios = await relatorioService.findByUser(usuarioId);
+
+      return response.status(200).json(relatorios);
+    } catch (erro) {
+      console.error(erro);
+      return response.status(500).json({ erro: "Erro ao buscar relatórios" });
+    }
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {

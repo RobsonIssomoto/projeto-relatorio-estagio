@@ -4,7 +4,7 @@ import type { IAtividade } from "./atividade.types.js";
 const atividadeSchema = new Schema<IAtividade>(
   {
     alunoId: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: "Usuario",
       required: true,
     },

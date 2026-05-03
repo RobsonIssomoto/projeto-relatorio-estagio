@@ -1,13 +1,10 @@
 import { Router } from "express";
-import usuarioController from "./usuario.controller.js";
-import { garantirAutenticacao } from "../../middlewares/auth.middleware.js";
+import { UsuarioController } from "./usuario.controller.js";
 
 const usuarioRoutes = Router();
+const usuarioController = new UsuarioController();
 
-// Rota para cadastrar (POST /api/v1/usuarios)
-usuarioRoutes.post("/", usuarioController.create);
-
-// Rota para listar (GET /api/v1/usuarios)
-usuarioRoutes.get("/", garantirAutenticacao, usuarioController.findAll);
+// Define POST na raiz dessa rota vai chamar a função 'criar'
+usuarioRoutes.post("/", usuarioController.criar);
 
 export default usuarioRoutes;

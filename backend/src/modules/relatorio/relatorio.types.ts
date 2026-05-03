@@ -1,10 +1,8 @@
-import type { Types } from "mongoose";
-
 export interface IRelatorio {
-  alunoId: Types.ObjectId;
+  alunoId: number;
   aluno: string;
   mesReferencia: string;
-  atividades?: string[];
+  atividades?: string[]; // O ID das atividades continua sendo string (ObjectId) pois estão no Mongo
   horasRealizadas: number;
   status: "Pendente" | "Aprovado" | "Revisar";
   createdAt: Date;
@@ -12,7 +10,7 @@ export interface IRelatorio {
 }
 
 export interface ICreateRelatorioDTO {
-  alunoId: string;
+  alunoId: number;
   aluno: string;
   mesReferencia: string;
   atividades?: string[];

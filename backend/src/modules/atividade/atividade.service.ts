@@ -1,11 +1,11 @@
-import { Types } from "mongoose";
+// import { Types } from "mongoose";
 import type { IAtividade, ICreateAtividadeDTO, IUpdateAtividadeDTO } from "./atividade.types.js";
 import Atividade from "./atividade.model.js";
 
 class AtividadeService {
   public async create(data: ICreateAtividadeDTO) {
     const atividade = await Atividade.create({
-      alunoId: new Types.ObjectId(data.alunoId),
+      alunoId: data.alunoId,
       titulo: data.titulo,
       dataAtividade: data.dataAtividade,
       horas: data.horas,
@@ -24,8 +24,8 @@ class AtividadeService {
     return await Atividade.findById(id);
   }
 
-  public async findAllByAluno(alunoId: string): Promise<IAtividade[]> {
-    return await Atividade.find({ alunoId: new Types.ObjectId(alunoId) });
+  public async findAllByAluno(alunoId: number): Promise<IAtividade[]> {
+    return await Atividade.find({ alunoId });
   }
 
   public async update(id: string, data: IUpdateAtividadeDTO) {

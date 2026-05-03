@@ -1,35 +1,43 @@
 import type { Request, Response, NextFunction } from "express";
-import { ENV } from "../config/env.js";
 import jwt from "jsonwebtoken";
+import { ENV } from "../config/env.js";
 
-export function garantirAutenticacao(request: Request, response: Response, next: NextFunction): void | Response {
-  // 1. O React mandou o Token no cabeçalho?
-  const authHeader = request.headers.authorization;
+export interface AuthRequest extends Request {
+  usuarioLogado?: {
+    id: number;
+    perfil: number;
+  };
+}
+
+export const verificarToken = (req: AuthRequest, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return response.status(401).json({ erro: "Acesso negado. Token não fornecido." });
+    return res.status(401).json({ erro: "Acesso negado. Token não fornecido." });
   }
 
-  // 2. O formato padrão é "Bearer token_gigante_aqui"
-  // Elimina o texto no espaço e pega só a segunda parte (o token)
   const partes = authHeader.split(" ");
   if (partes.length !== 2 || partes[0] !== "Bearer") {
-    return response.status(401).json({ erro: "Erro de formatação do Token." });
+    return res.status(401).json({ erro: "Formato de token inválido." });
   }
 
-  const token = partes[1] as string;
+  const token = partes[1];
+
+
+  if (!token) {
+    return res.status(401).json({ erro: "Token não encontrado na formatação." });
+  }
 
   try {
-    // 3. O token é válido, foi emitido e não expirou?
-    const payload = jwt.verify(token, ENV.JWT_SECRET);
+    const secret = ENV.JWT_SECRET || "chave_seguranca_padrao_fatec";
 
-    // 4. Se for válido, injeta as informações de quem está logado na requisição!
-    // Usando 'as any' temporariamente para o TypeScript não reclamar do campo novo.
-    (request as any).usuarioLogado = payload;
+    // Agora a linha vermelha aqui vai desaparecer!
+    const decodificado = jwt.verify(token, secret) as unknown as { id: number; perfil: number };
 
-    // 5. Pode passar! Vai para o Controller.
-    return next();
+    req.usuarioLogado = decodificado;
+
+    next();
   } catch (error) {
-    return response.status(401).json({ erro: "Token inválido ou expirado. Faça login novamente." });
+    return res.status(401).json({ erro: "Token inválido ou expirado." });
   }
-}
+};

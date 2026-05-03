@@ -1,44 +1,44 @@
+import { prisma } from "../../config/databasePrisma.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import usuarioModel from "../usuario/usuario.model.js";
-import type { IUsuario } from "../usuario/usuario.types.js";
 
-// Em produção, isso fica no arquivo .env!
-const SEGREDO_JWT = process.env.JWT_SECRET || "minha_chave_super_secreta_fatec_2024";
+export class AuthService {
+  async autenticar(email: string, senhaPlana: string) {
+    // 1. Busca o usuário no SQL Server pelo E-mail
+    const usuario = await prisma.usuarios.findUnique({
+      where: { Email: email },
+    });
 
-class AuthService {
-  public async login(email: string, senhaEmTextoPlano: string) {
-    console.log(`[LOGIN] Tentando acessar com e-mail: ${email}`);
-    // 1. O usuário existe?
-    const usuario = await usuarioModel.findOne({ email }).lean<IUsuario>();
-    console.log(`[LOGIN] Usuário encontrado no banco:`, usuario ? "Sim" : "Não");
+    // Se não achar o usuário, para aqui
     if (!usuario) {
-      throw new Error("E-mail ou senha inválidos.");
+      throw new Error("Credenciais inválidas");
     }
-    console.log(`[LOGIN] Comparando senha digitada com o Hash salvo: ${usuario.senhaHash}`);
-    // 2. A senha está correta? (O bcrypt compara o texto com o Hash do banco)
-    const senhaValida = await bcrypt.compare(senhaEmTextoPlano, usuario.senhaHash);
+
+    // 2. Compara a senha digitada com a senha criptografada do banco
+    const senhaValida = await bcrypt.compare(senhaPlana, usuario.Senha);
+
     if (!senhaValida) {
-      throw new Error("E-mail ou senha inválidos.");
+      throw new Error("Credenciais inválidas"); // Mesma mensagem por segurança
     }
 
-    // 3. Gerar o Passaporte (JWT)
-    // O que vai dentro do payload é público, NUNCA coloque a senha aqui.
-    const payload = {
-      id: usuario._id,
-      perfil: usuario.perfil,
-    };
+    // 3. Gera o "Crachá Digital" (JWT)
+    // ATENÇÃO: Em produção, colocar essa chave "secreta" no seu arquivo .env
+    const segredo = process.env.JWT_SECRET || "chave_super_secreta_do_projeto";
+    const token = jwt.sign(
+      {
+        id: usuario.Id,
+        perfil: usuario.Perfil,
+      },
+      segredo,
+      { expiresIn: "1d" }, // Token vale por 1 dia
+    );
 
-    const token = jwt.sign(payload, SEGREDO_JWT, { expiresIn: "8h" });
-
-    // 4. Devolver o usuário seguro e o token
-    const { senhaHash, ...usuarioSeguro } = usuario;
+    // 4. Remove a senha antes de devolver o usuário pro frontend
+    const { Senha, ...usuarioSemSenha } = usuario;
 
     return {
-      usuario: usuarioSeguro,
+      usuario: usuarioSemSenha,
       token,
     };
   }
 }
-
-export default new AuthService();
