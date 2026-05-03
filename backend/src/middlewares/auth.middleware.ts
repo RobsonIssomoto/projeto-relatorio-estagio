@@ -23,7 +23,6 @@ export const verificarToken = (req: AuthRequest, res: Response, next: NextFuncti
 
   const token = partes[1];
 
-
   if (!token) {
     return res.status(401).json({ erro: "Token não encontrado na formatação." });
   }
@@ -31,7 +30,6 @@ export const verificarToken = (req: AuthRequest, res: Response, next: NextFuncti
   try {
     const secret = ENV.JWT_SECRET || "chave_seguranca_padrao_fatec";
 
-    // Agora a linha vermelha aqui vai desaparecer!
     const decodificado = jwt.verify(token, secret) as unknown as { id: number; perfil: number };
 
     req.usuarioLogado = decodificado;

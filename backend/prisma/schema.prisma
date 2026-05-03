@@ -15,14 +15,14 @@ model EFMigrationsHistory {
 
 model Empresas {
     Id                  Int                   @id(map: "PK_Empresas") @default(autoincrement())
-    Nome                String                @db.NVarChar(Max)
-    CNPJ                String                @db.NVarChar(Max)
-    Email               String                @default("N'", map: "DF__Empresas__Email__4D94879B") @db.NVarChar(Max)
-    DataAtualizacao     DateTime?
-    DataCadastro        DateTime              @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Empresas__DataCa__43D61337")
-    RazaoSocial         String                @default("N'", map: "DF__Empresas__RazaoS__44CA3770") @db.NVarChar(Max)
-    Telefone            String?               @db.NVarChar(Max)
-    UsuarioId           Int                   @default(0, map: "DF__Empresas__Usuari__46B27FE2")
+    Nome                String                @db.NVarChar(255)
+    CNPJ                String                @unique @db.NVarChar(14)
+    Email               String                @unique @db.NVarChar(255)
+    DataAtualizacao     DateTime?             @updatedAt
+    DataCadastro        DateTime              @default(now())
+    RazaoSocial         String                @db.NVarChar(255)
+    Telefone            String?               @db.NVarChar(20)
+    UsuarioId           Int
     Usuarios            Usuarios              @relation(fields: [UsuarioId], references: [Id], onUpdate: NoAction, map: "FK_Empresas_Usuarios_UsuarioId")
     SolicitacoesEstagio SolicitacoesEstagio[]
     Supervisores        Supervisores[]
@@ -32,14 +32,14 @@ model Empresas {
 
 model Estagiarios {
     Id                  Int                   @id(map: "PK_Estagiarios") @default(autoincrement())
-    Nome                String                @db.NVarChar(Max)
-    CPF                 String                @unique(map: "IX_Estagiarios_CPF") @db.NVarChar(450)
-    Telefone            String?               @db.NVarChar(Max)
-    Email               String                @db.NVarChar(Max)
-    DataCadastro        DateTime
-    DataAtualizacao     DateTime?
+    Nome                String                @db.NVarChar(255)
+    CPF                 String                @unique @db.NVarChar(11)
+    Telefone            String?               @db.NVarChar(20)
+    Email               String                @db.NVarChar(255)
+    DataCadastro        DateTime              @default(now())
+    DataAtualizacao     DateTime?             @updatedAt
     UsuarioId           Int
-    NomeCurso           String?               @db.NVarChar(Max)
+    NomeCurso           String?               @db.NVarChar(255)
     Usuarios            Usuarios              @relation(fields: [UsuarioId], references: [Id], onUpdate: NoAction, map: "FK_Estagiarios_Usuarios_UsuarioId")
     SolicitacoesEstagio SolicitacoesEstagio[]
 
@@ -48,13 +48,13 @@ model Estagiarios {
 
 model Orientadores {
     Id                Int                 @id(map: "PK_Orientadores") @default(autoincrement())
-    Nome              String              @db.NVarChar(Max)
-    CPF               String              @db.NVarChar(Max)
-    Telefone          String?             @db.NVarChar(Max)
-    Email             String              @db.NVarChar(Max)
-    Departamento      String              @db.NVarChar(Max)
-    DataCadastro      DateTime
-    DataAtualizacao   DateTime?
+    Nome              String              @db.NVarChar(255)
+    CPF               String              @unique @db.NVarChar(11)
+    Telefone          String?             @db.NVarChar(20)
+    Email             String              @db.NVarChar(255)
+    Departamento      String              @db.NVarChar(255)
+    DataCadastro      DateTime            @default(now())
+    DataAtualizacao   DateTime?           @updatedAt
     UsuarioId         Int
     Usuarios          Usuarios            @relation(fields: [UsuarioId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_Orientadores_Usuarios_UsuarioId")
     TermosCompromisso TermosCompromisso[]
@@ -64,11 +64,11 @@ model Orientadores {
 
 model SolicitacoesEstagio {
     Id                Int                @id(map: "PK_SolicitacoesEstagio") @default(autoincrement())
-    DataSubmissao     DateTime
-    Observacao        String?            @db.NVarChar(Max)
+    DataSubmissao     DateTime           @default(now())
+    Observacao        String?            @db.NVarChar(500)
     Status            Int?
-    Email             String?            @db.NVarChar(Max)
-    Token             String?            @db.NVarChar(Max)
+    Email             String?            @db.NVarChar(255)
+    Token             String?            @db.NVarChar(255)
     EstagiarioId      Int
     EmpresaId         Int?
     Empresas          Empresas?          @relation(fields: [EmpresaId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SolicitacoesEstagio_Empresas_EmpresaId")
@@ -81,13 +81,13 @@ model SolicitacoesEstagio {
 
 model Supervisores {
     Id                Int                 @id(map: "PK_Supervisores") @default(autoincrement())
-    Nome              String              @db.NVarChar(Max)
-    CPF               String              @db.NVarChar(Max)
-    Cargo             String              @db.NVarChar(Max)
-    EmpresaId         Int                 @default(0, map: "DF__Superviso__Empre__3493CFA7")
-    Email             String?             @db.NVarChar(Max)
-    Telefone          String              @default("N'", map: "DF__Superviso__Telef__4E53A1AA") @db.NVarChar(Max)
-    UsuarioId         Int                 @default(0, map: "DF__Superviso__Usuar__671F4F74")
+    Nome              String              @db.NVarChar(255)
+    CPF               String              @unique @db.NVarChar(11)
+    Cargo             String              @db.NVarChar(255)
+    EmpresaId         Int
+    Email             String?             @db.NVarChar(255)
+    Telefone          String              @db.NVarChar(20)
+    UsuarioId         Int
     Empresas          Empresas            @relation(fields: [EmpresaId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_Supervisores_Empresas_EmpresaId")
     Usuarios          Usuarios            @relation(fields: [UsuarioId], references: [Id], onUpdate: NoAction, map: "FK_Supervisores_Usuarios_UsuarioId")
     TermosCompromisso TermosCompromisso[]
@@ -112,15 +112,15 @@ model TermosCompromisso {
     ValorBolsa           Float?
     DataInicio           DateTime?
     DataFim              DateTime?
-    NumeroApolice        String?             @db.NVarChar(Max)
-    NomeSeguradora       String?             @db.NVarChar(Max)
+    NumeroApolice        String?             @db.NVarChar(255)
+    NomeSeguradora       String?             @db.NVarChar(255)
     SolicitacaoEstagioId Int                 @unique(map: "IX_TermosCompromisso_SolicitacaoEstagioId")
     OrientadorId         Int?
-    Justificativa        String?             @db.NVarChar(Max)
-    PlanoDeAtividades    String?             @db.NVarChar(Max)
+    Justificativa        String?             @db.NVarChar(500)
+    PlanoDeAtividades    String?             @db.NVarChar(500)
     SupervisorId         Int?
-    CaminhoArquivo       String?             @db.NVarChar(Max)
-    NomeArquivo          String?             @db.NVarChar(Max)
+    CaminhoArquivo       String?             @db.NVarChar(255)
+    NomeArquivo          String?             @db.NVarChar(255)
     Orientadores         Orientadores?       @relation(fields: [OrientadorId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TermosCompromisso_Orientadores_OrientadorId")
     SolicitacoesEstagio  SolicitacoesEstagio @relation(fields: [SolicitacaoEstagioId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_TermosCompromisso_SolicitacoesEstagio_SolicitacaoEstagioId")
     Supervisores         Supervisores?       @relation(fields: [SupervisorId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TermosCompromisso_Supervisores_SupervisorId")
@@ -131,12 +131,12 @@ model TermosCompromisso {
 
 model Usuarios {
     Id              Int            @id(map: "PK_Usuarios") @default(autoincrement())
-    Login           String         @unique(map: "IX_Usuarios_Login") @db.NVarChar(450)
-    Senha           String         @db.NVarChar(Max)
-    Email           String         @unique(map: "IX_Usuarios_Email") @db.NVarChar(450)
+    Login           String         @unique(map: "IX_Usuarios_Login") @db.NVarChar(255)
+    Senha           String         @db.NVarChar(255)
+    Email           String         @unique(map: "IX_Usuarios_Email") @db.NVarChar(255)
     Perfil          Int
     DataCadastro    DateTime       @default(now())
-    DataAtualizacao DateTime?
+    DataAtualizacao DateTime?      @updatedAt
     Empresas        Empresas[]
     Estagiarios     Estagiarios[]
     Orientadores    Orientadores[]

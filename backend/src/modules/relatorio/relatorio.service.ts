@@ -8,10 +8,10 @@ class RelatorioService {
    * Cria o relatório mensal buscando o Nome na tabela Estagiarios
    */
   public async create(alunoId: number, mesReferencia: string): Promise<IRelatorio> {
-    // 1. Busca os dados do Estagiário vinculados ao UsuarioId (131)
+    // 1. Busca os dados do Estagiário vinculados ao UsuarioId
     const dadosEstagiario = await prisma.estagiarios.findFirst({
       where: { UsuarioId: alunoId }, // Vincula pelo ID do usuário logado
-      select: { Nome: true }, // Pega o Nome que existe aqui
+      select: { Nome: true }, // Pega o Nome
     });
 
     // 2. Busca atividades que ainda não possuem relatório para este aluno

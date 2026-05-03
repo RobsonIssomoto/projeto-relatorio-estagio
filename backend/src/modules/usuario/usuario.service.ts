@@ -9,9 +9,14 @@ export class UsuarioService {
     const senhaHash = await bcrypt.hash(dados.Senha, salt);
     const dataCadastroAtual = new Date();
 
+    const { Email, Senha, Perfil, CPF, CNPJ, Nome, RazaoSocial, Telefone, ...rest } = dados;
+    const cpfLimpo = CPF ? CPF.replace(/\D/g, "") : null;
+    const cnpjLimpo = CNPJ ? CNPJ.replace(/\D/g, "") : null;
+    const telefoneLimpo = Telefone ? Telefone.replace(/\D/g, "") : null;
+
     // 1. Trata os campos opcionais para que o Prisma (SQL Server) aceite
     // O operador ?? null transforma 'undefined' em 'null'
-    const telefoneTratado = dados.Telefone ?? null;
+    const telefoneTratado = telefoneLimpo ?? null;
     const nomeCursoTratado = dados.NomeCurso ?? null;
     const razaoSocialTratada = dados.RazaoSocial ?? null;
 
@@ -31,7 +36,7 @@ export class UsuarioService {
         create: [
           {
             Nome: dados.Nome,
-            CPF: dados.CPF || "",
+            CPF: cpfLimpo || "",
             Email: dados.Email,
             Telefone: telefoneTratado,
             NomeCurso: nomeCursoTratado,
@@ -46,7 +51,7 @@ export class UsuarioService {
         create: [
           {
             Nome: dados.Nome,
-            CNPJ: dados.CNPJ || "",
+            CNPJ: cnpjLimpo || "",
             Email: dados.Email,
             RazaoSocial: razaoSocialTratada || dados.Nome,
             Telefone: telefoneTratado,
