@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { UsuarioService } from "./usuario.service.js";
+import type { AuthRequest } from "../../middlewares/auth.middleware.js";
 
 const usuarioService = new UsuarioService();
 
@@ -22,6 +23,32 @@ export class UsuarioController {
         erro: "Falha ao criar usuário",
         detalhes: error.message,
       });
+    }
+  }
+
+  async buscar(request: AuthRequest, response: Response) {
+    const id = request.usuarioLogado?.id;
+
+    if (!id) return response.status(401).json({ erro: "Usuário não identificado" });
+
+    try {
+      const usuario = await usuarioService.buscarUsuarioPorId(id);
+      return response.status(200).json(usuario);
+    } catch (error) {
+      return response.status(500).json({ erro: "Erro ao buscar usuário" });
+    }
+  }
+
+  async editar(request: AuthRequest, response: Response) {
+    const id = request.usuarioLogado?.id;
+
+    if (!id) return response.status(401).json({ erro: "Acesso não autorizado" });
+
+    try {
+      const usuarioAtualizado = await usuarioService.atualizarUsuario(id, request.body);
+      return response.status(200).json(usuarioAtualizado);
+    } catch (error) {
+      return response.status(400).json({ erro: "Erro ao atualizar dados" });
     }
   }
 }

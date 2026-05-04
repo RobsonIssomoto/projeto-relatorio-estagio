@@ -1,6 +1,6 @@
 import { prisma } from "../../config/databasePrisma.js";
 import bcrypt from "bcrypt";
-import type { CriarUsuarioDTO } from "./usuario.types.js";
+import type { CriarUsuarioDTO, EditarUsuarioDTO } from "./usuario.types.js";
 import type { Prisma } from "@prisma/client";
 
 export class UsuarioService {
@@ -67,6 +67,47 @@ export class UsuarioService {
       include: {
         Estagiarios: true,
         Empresas: true,
+      },
+    });
+  }
+
+  async buscarUsuarioPorId(id: number) {
+    return await prisma.usuarios.findUnique({
+      where: { Id: id },
+      include: {
+        Estagiarios: true,
+        Empresas: true,
+      },
+    });
+  }
+
+  async atualizarUsuario(id: number, dados: EditarUsuarioDTO) {
+    const { Nome, CPF, CNPJ, Telefone, ...rest } = dados;
+    const telefoneLimpo = Telefone ? Telefone.replace(/\D/g, "") : undefined;
+
+    const dadosPerfil = {
+      ...(dados.Nome !== undefined && { Nome: dados.Nome }),
+      ...(telefoneLimpo !== undefined && { Telefone: telefoneLimpo }),
+    };
+
+    return await prisma.usuarios.update({
+      where: { Id: id },
+      data: {
+        // 3. Só entra nos blocos de updateMany se tiver algo para atualizar no perfil
+        ...(Object.keys(dadosPerfil).length > 0 && {
+          Estagiarios: {
+            updateMany: {
+              where: {},
+              data: dadosPerfil,
+            },
+          },
+          Empresas: {
+            updateMany: {
+              where: {},
+              data: dadosPerfil,
+            },
+          },
+        }),
       },
     });
   }

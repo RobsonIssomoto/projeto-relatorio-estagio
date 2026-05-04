@@ -30,3 +30,12 @@ export interface CriarUsuarioDTO {
   RazaoSocial?: string;
   NomeCurso?: string;
 }
+
+export interface EditarUsuarioDTO{
+  Nome? : string;
+  CPF?: string;
+  CNPJ?: string;
+  Telefone?: string;
+  RazaoSocial?: string;
+  NomeCurso?: string;
+}
