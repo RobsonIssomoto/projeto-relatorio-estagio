@@ -8,9 +8,8 @@ Projeto desenvolvido para a disciplina de Projeto Integrador (PI) do 4º Semestr
 
 O repositório está organizado em duas frentes principais:
 
-- /backend: API REST desenvolvida com Node.js, Express, TypeScript e persistência no MongoDB Atlas. Segue padrões de arquitetura limpa (MVC) e referências NoSQL (Mongoose Refs).
-- /frontend: Interface SPA (Single Page Application) desenvolvida com React, Vite, TypeScript e Material UI.
-
+- **`/backend`**: API REST desenvolvida com Node.js, Express e TypeScript. Utiliza persistência com **MongoDB Atlas** (documentos flexíveis para relatórios) e **SQL Server via Prisma ORM** (dados relacionais para usuários e perfis).
+- **`/frontend`**: Interface SPA (Single Page Application) desenvolvida com React, Vite, TypeScript, **Material UI** e **Axios**.
 ---
 
 ## 🚀 Como Executar o Projeto
@@ -46,22 +45,34 @@ Certifique-se de ter o Node.js instalado em sua máquina.
 
 ## 🛠️ Tecnologias e Bibliotecas Utilizadas
 
-| Camada      | Tecnologias Principais                                            |
-| :---------- | :---------------------------------------------------------------- |
-| Back-end    | Node.js, TypeScript, Express, Mongoose (MongoDB), BCrypt          |
-| Front-end   | React (Vite), Material UI (MUI), Axios, React Hook Form, Zod      |
-| Arquitetura | Monorepo, Module-Based Architecture, Singleton, In-Memory Mocking |
+| Camada         | Tecnologias Principais                                                                 |
+| :------------- | :------------------------------------------------------------------------------------- |
+| **Back-end**   | Node.js, TypeScript, Express, Prisma ORM (SQL Server), Mongoose (MongoDB), JWT, bcrypt |
+| **Front-end**  | React (Vite), TypeScript, Material UI, Axios, React Hook Form, Zod                     |
+| **Arquitetura**| Monorepo, Arquitetura Modular, Persistência Poliglota, API RESTful                     |
 
 ---
 
 ## 🏗️ Novas Implementações Técnicas
+### **1. Gestão de Perfil de Usuário**
+* **Visualização Centralizada:** Busca de dados de perfis específicos (Estagiário/Empresa) utilizando relações aninhadas no Prisma.
+* **Edição com Segurança:** Atualização de dados cadastrais com bloqueio de edição em campos sensíveis (E-mail, CPF e CNPJ) para garantir a consistência do sistema.
+* **Layout Padronizado:** Interface de usuário vertical e retangular, seguindo o padrão visual dos formulários de registro de atividade para uma experiência coesa (UX).
 
+### **2. Tratamento e Sanitização de Dados**
+* **Máscaras no Front-end:** Implementação de formatação em tempo real para CPF, CNPJ e Telefone.
+* **Limpeza no Back-end:** Uso de Regex para remover caracteres especiais antes da persistência no SQL Server, evitando erros de tipo e tamanho de campo.
+
+### **3. Segurança (Middleware)**
+* **authMiddleware:** Proteção de rotas privadas e validação de sessão ativa no lado do servidor.
+
+---
 - **Segurança:** Implementação de hashing de senhas utilizando a biblioteca bcrypt para garantir a proteção dos dados sensíveis dos usuários.
 - **Arquitetura de Módulos:** Migração da estrutura MVC global para uma organização baseada em módulos independentes (relatorio, usuario), facilitando a escalabilidade e manutenção.
-- **Persistência Poliglota:** Estruturação do sistema para suportar múltiplos bancos de dados:
+- **Persistência Poliglota:** Estruturação do sistema para suportar múltiplos bancos de dados simultâneos:
   - **MongoDB:** Armazenamento de documentos flexíveis (Relatórios de Estágio).
-  - **SQL Server (Em breve):** Gestão de usuários e perfis de acesso (RBAC).
-- **CSS Grid v6:** Migração do sistema de Grid legando para a nova sintaxe de `size` do Material UI v6, eliminando inconsistências de layout.
+  - **SQL Server:** Gestão de usuários e perfis de acesso através do Prisma ORM.
+- **CSS Grid:** Migração do sistema de Grid legando para a nova sintaxe de `size` do Material UI v6, eliminando inconsistências de layout.
 - **Simetria de Dashboard:** Lógica de quebra de colunas (4 -> 2 -> 1) para evitar "cards órfãos" em resoluções intermediárias.
 
 ---
@@ -70,25 +81,25 @@ Certifique-se de ter o Node.js instalado em sua máquina.
 
 ### ⚙️ Back-end (Node.js & TypeScript)
 
-- [x] **Arquitetura MVC:** Separação clara de responsabilidades entre `Routes`, `Controllers` e `Services`.
-- [x] **Módulo de Relatórios:** CRUD Completo (Create, Read, Update, Delete) integrado ao MongoDB Atlas. Implementação de tipagem rígida com `Types.ObjectId` e proteção de integridade em rotas de atualização.
-- [x] **Módulo de Usuários:** Rotas `POST` e `GET` com persistência em memória e regras de negócio para criação de perfis.
-- [x] **Segurança:** Implementação de criptografia de senhas usando a biblioteca `bcrypt`.
+- [x] **Arquitetura MVC & Modular:** Organização do código por domínios de negócio.
+- [x] **Módulo de Relatórios:** CRUD Completo integrado ao MongoDB Atlas.
+- [x] **Migração do núcleo para SQL Server via Prisma:** Repositório de usuários e perfis migrado para base relacional.
+- [x] **Integração Legada (C# & SQL):** Conexão com a base de dados existente para sincronização de cadastros.
 
 ### 💻 Front-end (React & Material UI)
 
 - [x] **Setup Inicial:** Configuração do projeto utilizando Vite e React.
-- [x] **Tema Global (Material UI):** Criação de um tema customizado com as cores oficias da instituição (`fatec.main`).
-- [x] **Layout & Navegação:** Desenvolvimento de uma `Navbar` responsiva (com menu hamburguer lateral) e um container principal de layout flexível.
+- [x] **Tema Global (Material UI):** Criação de um tema customizado com as cores oficiais da instituição (`fatec.main`).
+- [x] **Layout & Navegação:** Desenvolvimento de uma `Navbar` responsiva (com menu hambúrguer lateral) e um container principal de layout flexível.
 - [x] **Telas de Autenticação:** Implementação da tela de **Cadastro** com renderização condicional.
-- [x] **Componentização Avançada:** Refatoração de formulários complexos em subcomponentes isolados e criação de inputs customizados reutilizáveis (ex: `CampoSenha`).
-- [x] **UX e Validação Dinâmica:** Implementação de checklist visual de força de senha em tempo real (Regex) e validação de confirmação de senhas com gatilhos de foco (`onBlur`/`onFocus`).
-- [x] **Arquitetura de Layout Pro:** Implementação de `DashboardLayout` com _Mini Variant Drawer_ (sidebar retrátil) e persistência de estado.
-- [x] **Componentização de Alto Nível:**
-  - `Header`: Barra superior com menu de usuário, avatar com cálculo de iniciais e ações de perfil/logout.
-  - `BannerPerfilAluno`: Visualização horizontal de dados acadêmicos inspirada no sistema SIGA da Fatec.
+- [x] **Componentização:** Refatoração de formulários em subcomponentes e criação de inputs customizados reutilizáveis (ex: `CampoSenha`).
+- [x] **UX e Validação Dinâmica:** Implementação de checklist visual de força de senha em tempo real (Regex) e validação de confirmação de senhas com gatilhos de foco.
+- [x] **Arquitetura de Layout:** Implementação de `DashboardLayout` com *Mini Variant Drawer* (sidebar retrátil) e persistência de estado.
+- [x] **Componentização:**
+  - `Header`: Barra superior com menu de usuário, avatar e ações de perfil/logout.
   - `CardMetrica`: Cards de indicadores (KPIs) com suporte a tendências e ícones dinâmicos.
-- [x] **Responsividade Avançada:** Uso de **CSS Grid** com `minmax` e `auto-fit` para garantir que o dashboard se adapte perfeitamente de 1200px até telas de celular, mantendo a simetria visual.
+- [x] **Responsividade:** Uso de **CSS Grid** com `minmax` e `auto-fit` para garantir que o dashboard se adapte, mantendo a simetria visual.
+- [x] **Perfil do Usuário:** Implementação do fluxo completo de visualização/edição de perfil.
 
 ---
 
@@ -97,7 +108,6 @@ Certifique-se de ter o Node.js instalado em sua máquina.
 - [ ] **Lógica de Dados:** Integrar `React Hook Form` e `Zod` no formulário de "Nova Atividade".
 - [ ] **Painel do Supervisor:** Interface para visualização, aprovação ou devolução (com observações) de relatórios pendentes.
 - [ ] **Geração de PDF:** Implementação de exportação dos relatórios aprovados para formato PDF pronto para assinatura.
-- [ ] **Integração Legada (C# & SQL):** Conexão com a base de dados SQL/C# existente para sincronização de cadastros de empresas e supervisores.
 
 ---
 
