@@ -1,6 +1,7 @@
 import { prisma } from "../../config/databasePrisma.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { ENV } from "../../config/env.js";
 
 export class AuthService {
   async autenticar(email: string, senhaPlana: string) {
@@ -23,7 +24,7 @@ export class AuthService {
 
     // 3. Gera o "Crachá Digital" (JWT)
     // ATENÇÃO: Em produção, colocar essa chave "secreta" no seu arquivo .env
-    const segredo = process.env.JWT_SECRET || "chave_super_secreta_do_projeto";
+    const segredo = ENV.JWT_SECRET || "chave_super_secreta_do_projeto";
     const token = jwt.sign(
       {
         id: usuario.Id,

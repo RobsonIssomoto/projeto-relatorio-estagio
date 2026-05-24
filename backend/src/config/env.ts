@@ -17,7 +17,6 @@ export const ENV = {
   PORT: obterVariavelAmbiente("PORT") || "3000",
 
   //Variáveis do SQL Server padronizados
-
   DB_USER: obterVariavelAmbiente("DB_USER"),
   DB_PASSWORD: obterVariavelAmbiente("DB_PASSWORD"),
   DB_DATABASE: obterVariavelAmbiente("DB_DATABASE"),

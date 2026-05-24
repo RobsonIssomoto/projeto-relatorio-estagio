@@ -9,22 +9,22 @@ export interface AuthRequest extends Request {
   };
 }
 
-export const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
+export const authMiddleware = (request: AuthRequest, response: Response, next: NextFunction) => {
+  const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json({ erro: "Acesso negado. Token não fornecido." });
+    return response.status(401).json({ erro: "Acesso negado. Token não fornecido." });
   }
 
   const partes = authHeader.split(" ");
   if (partes.length !== 2 || partes[0] !== "Bearer") {
-    return res.status(401).json({ erro: "Formato de token inválido." });
+    return response.status(401).json({ erro: "Formato de token inválido." });
   }
 
   const token = partes[1];
 
   if (!token) {
-    return res.status(401).json({ erro: "Token não encontrado na formatação." });
+    return response.status(401).json({ erro: "Token não encontrado na formatação." });
   }
 
   try {
@@ -32,10 +32,10 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
 
     const decodificado = jwt.verify(token, secret) as unknown as { id: number; perfil: number };
 
-    req.usuarioLogado = decodificado;
+    request.usuarioLogado = decodificado;
 
     next();
   } catch (error) {
-    return res.status(401).json({ erro: "Token inválido ou expirado." });
+    return response.status(401).json({ erro: "Token inválido ou expirado." });
   }
 };
