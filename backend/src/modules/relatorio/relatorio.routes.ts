@@ -22,4 +22,9 @@ relatorioRoutes.post("/", authMiddleware, relatorioController.create);
 relatorioRoutes.put("/:id", authMiddleware, relatorioController.update);
 relatorioRoutes.delete("/:id", authMiddleware, relatorioController.delete);
 
+// Rota para listar na tela do supervisor
+relatorioRoutes.get("/relatorios/supervisor/pendentes", authMiddleware, relatorioController.getPendentesSupervisor);
+
+// Rota para os botões verde e vermelho
+relatorioRoutes.put("/relatorios/:id/avaliar", authMiddleware, relatorioController.avaliar);
 export default relatorioRoutes;

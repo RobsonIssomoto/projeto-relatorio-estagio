@@ -4,24 +4,29 @@ import type { IRelatorio } from "./relatorio.types.js";
 const relatorioSchema = new Schema<IRelatorio>(
   {
     alunoId: {
-      type: Number, // 🚨 Aceita o ID numérico do SQL Server
+      type: Number, // ID do Usuário (SQL Server)
       required: true,
-      // Remove o ref: "Usuario" porque o usuário não está mais no Mongo
     },
     aluno: { type: String, required: true, trim: true },
     mesReferencia: { type: String, required: true, trim: true },
     atividades: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Atividade", // As atividades continuam com ref, pois estão no MongoDB!
+        ref: "Atividade",
         required: true,
       },
     ],
     horasRealizadas: { type: Number, required: true },
     status: {
       type: String,
-      enum: ["Pendente", "Aprovado", "Revisar"],
+      // Alinhado com o Front-end:
+      enum: ["Pendente", "Aprovado", "Devolvido"],
       default: "Pendente",
+    },
+    // campo para guardar o motivo da devolução do Supervisor
+    observacao: {
+      type: String,
+      required: false,
     },
   },
   {

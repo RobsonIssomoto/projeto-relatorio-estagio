@@ -80,6 +80,63 @@ class RelatorioService {
   public async delete(id: string): Promise<IRelatorio | null> {
     return await Relatorio.findByIdAndDelete(id);
   }
+
+  public async findBySupervisor(supervisorUsuarioId: number): Promise<IRelatorio[]> {
+    // 1. (SQL Server) Descobre qual é o ID do Supervisor baseado no usuário logado
+    const supervisor = await prisma.supervisores.findFirst({
+      where: { UsuarioId: supervisorUsuarioId },
+    });
+
+    if (!supervisor) {
+      throw new Error("Perfil de supervisor não encontrado.");
+    }
+
+    // 2. (SQL Server) Busca todos os Termos de Compromisso onde ele é o Supervisor
+    // e extrai as informações do Estagiário amarrado a esse termo.
+    const termos = await prisma.termosCompromisso.findMany({
+      where: { SupervisorId: supervisor.Id },
+      include: {
+        SolicitacoesEstagio: {
+          include: {
+            Estagiarios: true, // Estagiário
+          },
+        },
+      },
+    });
+
+    // 3. Extrai apenas os 'UsuarioId' dos estagiários encontrados
+    const alunosIds = termos
+      .map((termo) => termo.SolicitacoesEstagio?.Estagiarios?.UsuarioId)
+      .filter((id) => id !== undefined && id !== null);
+
+    if (alunosIds.length === 0) {
+      return []; // Se ele não tem alunos, retorna vazio
+    }
+
+    // 4. (MongoDB) Busca os relatórios apenas dos alunos encontrados
+    return await Relatorio.find({
+      alunoId: { $in: alunosIds },
+      // Se quiser mostrar os já aprovados no histórico, remover a linha abaixo:
+      status: "Pendente",
+    }).sort({ createdAt: -1 });
+  }
+
+  /**
+   * 💡 Aprova ou Devolve o relatório
+   */
+  public async avaliarRelatorio(
+    id: string,
+    status: "Aprovado" | "Devolvido",
+    observacao?: string,
+  ): Promise<IRelatorio | null> {
+    return await Relatorio.findByIdAndUpdate(
+      id,
+      {
+        $set: { status, observacao: observacao || "" },
+      },
+      { new: true }, // Retorna o documento já atualizado
+    );
+  }
 }
 
 export default new RelatorioService();

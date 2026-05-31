@@ -111,6 +111,48 @@ class RelatorioController {
       message: "Relatório deletado com sucesso",
     });
   }
+
+  // Busca os relatórios para a tela do Supervisor
+  public async getPendentesSupervisor(request: AuthRequest, response: Response) {
+    try {
+      const supervisorUsuarioId = request.usuarioLogado?.id;
+
+      if (!supervisorUsuarioId) {
+        return response.status(401).json({ erro: "Usuário não autenticado." });
+      }
+
+      const relatorios = await relatorioService.findBySupervisor(supervisorUsuarioId);
+      return response.status(200).json(relatorios);
+    } catch (erro: any) {
+      console.error("Erro ao buscar pendências do supervisor:", erro);
+      return response.status(500).json({ erro: erro.message || "Erro ao buscar relatórios." });
+    }
+  }
+
+  public async avaliar(request: AuthRequest, response: Response) {
+    try {
+      const { id } = request.params;
+      const { status, observacao } = request.body;
+
+      if (!id || typeof id !== "string") {
+        return response.status(400).json({ erro: "ID do relatório inválido." });
+      }
+
+      if (!["Aprovado", "Devolvido"].includes(status)) {
+        return response.status(400).json({ erro: "Status inválido." });
+      }
+
+      if (status === "Devolvido" && !observacao) {
+        return response.status(400).json({ erro: "A observação é obrigatória para devoluções." });
+      }
+
+      const relatorioAtualizado = await relatorioService.avaliarRelatorio(id, status, observacao);
+      return response.status(200).json(relatorioAtualizado);
+    } catch (erro) {
+      console.error("Erro ao avaliar relatório:", erro);
+      return response.status(500).json({ erro: "Erro ao atualizar relatório." });
+    }
+  }
 }
 
 export default new RelatorioController();

@@ -1,12 +1,14 @@
 export interface IRelatorio {
+  _id?: string; // 💡 Adicionado para facilitar o mapeamento do MongoDB
   alunoId: number;
   aluno: string;
   mesReferencia: string;
-  atividades?: string[]; // O ID das atividades continua sendo string (ObjectId) pois estão no Mongo
+  atividades?: string[];
   horasRealizadas: number;
-  status: "Pendente" | "Aprovado" | "Revisar";
-  createdAt: Date;
-  updatedAt: Date;
+  status: "Pendente" | "Aprovado" | "Devolvido";
+  observacao?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ICreateRelatorioDTO {
@@ -15,12 +17,13 @@ export interface ICreateRelatorioDTO {
   mesReferencia: string;
   atividades?: string[];
   horasRealizadas: number;
-  status: "Pendente" | "Aprovado" | "Revisar";
+  status: "Pendente" | "Aprovado" | "Devolvido";
 }
 
 export interface IUpdateRelatorioDTO {
   mesReferencia?: string;
   atividades?: string[];
   horasRealizadas?: number;
-  status?: "Pendente" | "Aprovado" | "Revisar";
+  status?: "Pendente" | "Aprovado" | "Devolvido";
+  observacao?: string;
 }
