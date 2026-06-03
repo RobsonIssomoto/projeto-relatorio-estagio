@@ -4,6 +4,20 @@ import { authMiddleware } from "../../middlewares/auth.middleware.js"; // cite: 
 
 const atividadeRoutes = Router();
 
+/**
+ * @swagger
+ * /atividades/aluno:
+ * get:
+ * summary: Lista as atividades do aluno logado (usando o Token)
+ * tags: [Atividades]
+ * responses:
+ * 200:
+ * description: Lista de atividades retornada com sucesso.
+ * 401:
+ * description: Token não fornecido ou inválido.
+ */
+
+
 // O '?' permite que o alunoId seja opcional.
 // Se não enviar, o Controller usa o ID do Token. Se enviar, usa o da URL.
 // 1. Rota para quando o ID é enviado (Professor/ADM consultando um aluno)
@@ -17,6 +31,39 @@ atividadeRoutes.get("/:id", authMiddleware, atividadeController.findById);
 
 // Rota para ADM ou Professor listar tudo
 atividadeRoutes.get("/", authMiddleware, atividadeController.findAll);
+
+/**
+ * @swagger
+ * /atividades:
+ * post:
+ * summary: Cria uma nova atividade de estágio
+ * tags: [Atividades]
+ * requestBody:
+ * required: true
+ * content:
+ * application/json:
+ * schema:
+ * type: object
+ * properties:
+ * titulo:
+ * type: string
+ * example: "Desenvolvimento da tela de Login"
+ * horas:
+ * type: number
+ * example: 4
+ * descricao:
+ * type: string
+ * example: "Criação da interface de login utilizando React e Material UI."
+ * tecnologias:
+ * type: array
+ * items:
+ * type: string
+ * example: ["React", "TypeScript"]
+ * responses:
+ * 201:
+ * description: Atividade criada com sucesso.
+ */
+
 
 // Todas as rotas passam pelo "Segurança" (authMiddleware)
 // O aluno cria a atividade e o sistema sabe quem ele é pelo Token
