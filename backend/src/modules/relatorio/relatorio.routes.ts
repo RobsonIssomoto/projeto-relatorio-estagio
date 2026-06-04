@@ -9,12 +9,12 @@ const relatorioRoutes = Router();
 /**
  * @swagger
  * /relatorios/aluno:
- * get:
- * summary: Lista os relatórios mensais gerados pelo aluno logado
- * tags: [Relatórios]
- * responses:
- * 200:
- * description: Retorna a lista de relatórios.
+ *   get:
+ *     summary: Lista os relatórios mensais gerados pelo aluno logado
+ *     tags: [Relatórios]
+ *     responses:
+ *       200:
+ *         description: Retorna a lista de relatórios.
  */
 
 // 1. Rotas específicas/estáticas
@@ -31,22 +31,22 @@ relatorioRoutes.get("/:id", authMiddleware, relatorioController.findById);
 /**
  * @swagger
  * /relatorios:
- * post:
- * summary: Gera um novo relatório mensal agrupando as atividades pendentes
- * tags: [Relatórios]
- * requestBody:
- * required: true
- * content:
- * application/json:
- * schema:
- * type: object
- * properties:
- * mesReferencia:
- * type: string
- * example: "Maio/2026"
- * responses:
- * 201:
- * description: Relatório gerado com sucesso.
+ *   post:
+ *     summary: Gera um novo relatório mensal agrupando as atividades pendentes
+ *     tags: [Relatórios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               mesReferencia:
+ *                 type: string
+ *                 example: Maio/2026
+ *     responses:
+ *       201:
+ *         description: Relatório gerado com sucesso.
  */
 
 // 3. Outras operações
