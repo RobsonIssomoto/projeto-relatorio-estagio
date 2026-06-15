@@ -14,7 +14,7 @@ export const ENV = {
   //Função. O TypeScript agora tem 100% de certeza que SEGREDO_JWT é uma string.
   JWT_SECRET: obterVariavelAmbiente("JWT_SECRET"),
   MONGO_URI: obterVariavelAmbiente("MONGO_URI"),
-  PORT: obterVariavelAmbiente("PORT") || "3333",
+  PORT: obterVariavelAmbiente("PORT") || "3000",
 
   //Variáveis do SQL Server padronizados
   DB_USER: obterVariavelAmbiente("DB_USER"),
