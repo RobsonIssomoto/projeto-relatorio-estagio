@@ -10,6 +10,7 @@ O repositório está organizado em duas frentes principais:
 
 - **`/backend`**: API REST desenvolvida com Node.js, Express e TypeScript. Utiliza persistência com **MongoDB Atlas** (documentos flexíveis para relatórios) e **SQL Server via Prisma ORM** (dados relacionais para usuários e perfis).
 - **`/frontend`**: Interface SPA (Single Page Application) desenvolvida com React, Vite, TypeScript, **Material UI** e **Axios**.
+
 ---
 
 ## 🚀 Como Executar o Projeto
@@ -21,12 +22,12 @@ Certifique-se de ter o Node.js instalado em sua máquina.
 ### 2. Configuração do Back-end
 
 1. No terminal, entre na pasta do servidor:
-   cd backend
+   `cd backend`
 2. Instale as dependências:
-   npm install
-3. Variáveis de Ambiente: Crie um arquivo .env na raiz da pasta /backend baseado no .env.example e insira sua string de conexão do MongoDB Atlas (MONGO_URI).
+   `npm install`
+3. Variáveis de Ambiente: Crie um arquivo `.env` na raiz da pasta `/backend` baseado no `.env.example` e insira sua string de conexão do MongoDB Atlas (`MONGO_URI`).
 4. Inicie o servidor em modo de desenvolvimento:
-   npm run dev
+   `npm run dev`
    (O servidor rodará por padrão em: http://localhost:3000)
 
 ---
@@ -34,39 +35,51 @@ Certifique-se de ter o Node.js instalado em sua máquina.
 ### 3. Configuração do Front-end
 
 1. Em um novo terminal, a partir da raiz do projeto, entre na pasta da interface:
-   cd frontend
+   `cd frontend`
 2. Instale as dependências:
-   npm install
+   `npm install`
 3. Inicie o ambiente de desenvolvimento:
-   npm run dev
+   `npm run dev`
    (O front-end rodará por padrão em: http://localhost:5173)
 
 ---
 
 ## 🛠️ Tecnologias e Bibliotecas Utilizadas
 
-| Camada         | Tecnologias Principais                                                                 |
-| :------------- | :------------------------------------------------------------------------------------- |
-| **Back-end**   | Node.js, TypeScript, Express, Prisma ORM (SQL Server), Mongoose (MongoDB), JWT, bcrypt |
-| **Front-end**  | React (Vite), TypeScript, Material UI, Axios, React Hook Form, Zod                     |
-| **Arquitetura**| Monorepo, Arquitetura Modular, Persistência Poliglota, API RESTful                     |
+| Camada          | Tecnologias Principais                                                                              |
+| :-------------- | :-------------------------------------------------------------------------------------------------- |
+| **Back-end**    | Node.js, TypeScript, Express, Prisma ORM (SQL Server), Mongoose (MongoDB), JWT, bcrypt, **Swagger** |
+| **Front-end**   | React (Vite), TypeScript, Material UI, Axios, React Hook Form, Zod, **React Router DOM**            |
+| **Arquitetura** | Monorepo, Arquitetura Modular, Persistência Poliglota, API RESTful                                  |
 
 ---
 
 ## 🏗️ Novas Implementações Técnicas
-### **1. Gestão de Perfil de Usuário**
-* **Visualização Centralizada:** Busca de dados de perfis específicos (Estagiário/Empresa) utilizando relações aninhadas no Prisma.
-* **Edição com Segurança:** Atualização de dados cadastrais com bloqueio de edição em campos sensíveis (E-mail, CPF e CNPJ) para garantir a consistência do sistema.
-* **Layout Padronizado:** Interface de usuário vertical e retangular, seguindo o padrão visual dos formulários de registro de atividade para uma experiência coesa (UX).
 
-### **2. Tratamento e Sanitização de Dados**
-* **Máscaras no Front-end:** Implementação de formatação em tempo real para CPF, CNPJ e Telefone.
-* **Limpeza no Back-end:** Uso de Regex para remover caracteres especiais antes da persistência no SQL Server, evitando erros de tipo e tamanho de campo.
+### **1. Página Inicial (Landing Page) e Experiência do Usuário (UX)**
 
-### **3. Segurança (Middleware)**
-* **authMiddleware:** Proteção de rotas privadas e validação de sessão ativa no lado do servidor.
+- **Componentização Semântica:** Refatoração da página principal em micro-componentes (Apresentacao, Funcionalidades, Sobre, PerguntasFrequentes, Contato e Rodape) visando escalabilidade e facilidade de manutenção no React.
+- **Interatividade Avançada:** Implementação de scroll suave por âncoras e efeito visual (hover interativo) de expansão no componente Accordion de Dúvidas.
+- **Roteamento Base:** Configuração das rotas SPA para navegação fluida desde a página raiz.
 
----
+### **2. Documentação da API**
+
+- **Swagger:** Codificação e configuração de documentação interativa no backend, mapeando os endpoints e parâmetros para consumo da interface.
+
+### **3. Gestão de Perfil de Usuário**
+
+- **Visualização Centralizada:** Busca de dados de perfis específicos (Estagiário/Empresa) utilizando relações aninhadas no Prisma.
+- **Edição com Segurança:** Atualização de dados cadastrais com bloqueio de edição em campos sensíveis (E-mail, CPF e CNPJ) para garantir a consistência do sistema.
+- **Layout Padronizado:** Interface de usuário vertical e retangular, seguindo o padrão visual dos formulários de registro de atividade para uma experiência coesa (UX).
+
+### **4. Tratamento e Sanitização de Dados**
+
+- **Máscaras no Front-end:** Implementação de formatação em tempo real para CPF, CNPJ e Telefone.
+- **Limpeza no Back-end:** Uso de Regex para remover caracteres especiais antes da persistência no SQL Server, evitando erros de tipo e tamanho de campo.
+
+### **5. Segurança e Estrutura**
+
+- **authMiddleware:** Proteção de rotas privadas e validação de sessão ativa no lado do servidor.
 - **Segurança:** Implementação de hashing de senhas utilizando a biblioteca bcrypt para garantir a proteção dos dados sensíveis dos usuários.
 - **Arquitetura de Módulos:** Migração da estrutura MVC global para uma organização baseada em módulos independentes (relatorio, usuario), facilitando a escalabilidade e manutenção.
 - **Persistência Poliglota:** Estruturação do sistema para suportar múltiplos bancos de dados simultâneos:
@@ -82,20 +95,23 @@ Certifique-se de ter o Node.js instalado em sua máquina.
 ### ⚙️ Back-end (Node.js & TypeScript)
 
 - [x] **Arquitetura MVC & Modular:** Organização do código por domínios de negócio.
-- [x] **Módulo de Relatórios:** CRUD Completo integrado ao MongoDB Atlas.
+- [x] **Módulo de Ativades e Relatórios:** CRUD Completo integrado ao MongoDB Atlas.
 - [x] **Migração do núcleo para SQL Server via Prisma:** Repositório de usuários e perfis migrado para base relacional.
 - [x] **Integração Legada (C# & SQL):** Conexão com a base de dados existente para sincronização de cadastros.
+- [x] **Documentação:** Documentação interativa da API configurada com Swagger.
 
 ### 💻 Front-end (React & Material UI)
 
+- [x] **Página Inicial Modular:** Landing Page completa implementada, estruturada em micro-componentes para maior escalabilidade e de acordo com o design system da Fatec.
+- [x] **Rotas Base:** Configuração das rotas principais de navegação para a interface inicial.
 - [x] **Setup Inicial:** Configuração do projeto utilizando Vite e React.
 - [x] **Tema Global (Material UI):** Criação de um tema customizado com as cores oficiais da instituição (`fatec.main`).
 - [x] **Layout & Navegação:** Desenvolvimento de uma `Navbar` responsiva (com menu hambúrguer lateral) e um container principal de layout flexível.
 - [x] **Telas de Autenticação:** Implementação da tela de **Cadastro** com renderização condicional.
-- [x] **Componentização:** Refatoração de formulários em subcomponentes e criação de inputs customizados reutilizáveis (ex: `CampoSenha`).
+- [x] **Componentização Secundária:** Refatoração de formulários em subcomponentes e criação de inputs customizados reutilizáveis (ex: `CampoSenha`).
 - [x] **UX e Validação Dinâmica:** Implementação de checklist visual de força de senha em tempo real (Regex) e validação de confirmação de senhas com gatilhos de foco.
-- [x] **Arquitetura de Layout:** Implementação de `DashboardLayout` com *Mini Variant Drawer* (sidebar retrátil) e persistência de estado.
-- [x] **Componentização:**
+- [x] **Arquitetura de Layout:** Implementação de `DashboardLayout` com _Mini Variant Drawer_ (sidebar retrátil) e persistência de estado.
+- [x] **Componentização Extra:**
   - `Header`: Barra superior com menu de usuário, avatar e ações de perfil/logout.
   - `CardMetrica`: Cards de indicadores (KPIs) com suporte a tendências e ícones dinâmicos.
 - [x] **Responsividade:** Uso de **CSS Grid** com `minmax` e `auto-fit` para garantir que o dashboard se adapte, mantendo a simetria visual.
