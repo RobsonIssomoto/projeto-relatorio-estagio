@@ -1,6 +1,6 @@
 import { Router } from "express";
-import atividadeController from "./atividade.controller.js"; // cite: 10
-import { authMiddleware } from "../../middlewares/auth.middleware.js"; // cite: 1
+import atividadeController from "./atividade.controller.js";
+import { authMiddleware } from "../../middlewares/auth.middleware.js";
 
 const atividadeRoutes = Router();
 
