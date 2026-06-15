@@ -20,4 +20,4 @@ api.interceptors.request.use((config) => {
 });
 
 export default api;
-/*Dica de Sênior: Usar o prefixo @NomeDoSeuApp: no localStorage evita que o seu token se misture com tokens de outros sites ou projetos que rodam no localhost. */
+/*Usar o prefixo @NomeDoSeuApp: no localStorage evita que o seu token se misture com tokens de outros sites ou projetos que rodam no localhost. */

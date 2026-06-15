@@ -75,9 +75,13 @@ class RelatorioService {
   }
 
   /**
-   * Exclui o relatório
+   * Exclui o relatório e libera as atividades vinculadas a ele
    */
   public async delete(id: string): Promise<IRelatorio | null> {
+    // 1. Procura todas as atividades com ID de relatório e remove o campo "relatorioId"
+    await Atividade.updateMany({ relatorioId: id }, { $unset: { relatorioId: "" } });
+
+    // 2. Exclui o relatório do banco de dados
     return await Relatorio.findByIdAndDelete(id);
   }
 

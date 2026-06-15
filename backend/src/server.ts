@@ -5,17 +5,26 @@ import databaseMongo from "./config/databaseMongo.js";
 import { prisma, testarPrisma } from "./config/databasePrisma.js";
 // import { executarSeeders } from "./config/seed.js";
 
+// Importações do Swagger
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./swagger.js";
+
 // Importação das rotas
+import atividadeRoutes from "./modules/atividade/atividade.routes.js";
 import relatorioRoutes from "./modules/relatorio/relatorio.routes.js";
 import usuarioRoutes from "./modules/usuario/usuario.routes.js";
 import authRoutes from "./modules/auth/auth.routes.js";
+
+// SWAGGER: Inicia a documentação antes das rotas da API
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Garante que o Express entenda o JSON
 app.use(express.json());
 
 // Plugando as rotas oficiais
+app.use("/atividades", atividadeRoutes);
 app.use("/relatorios", relatorioRoutes);
-app.use("/usuarios", usuarioRoutes); // Rota de usuários!
+app.use("/usuarios", usuarioRoutes);
 app.use("/auth", authRoutes);
 
 const PORT = ENV.PORT || 3000;
