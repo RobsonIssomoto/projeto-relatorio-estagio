@@ -8,6 +8,7 @@ export interface IAtividade {
   horas: number;
   tecnologias: string[];
   descricao: string;
+  comprovantes: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,12 +20,14 @@ export interface ICreateAtividadeDTO {
   horas: number;
   tecnologias: string[];
   descricao: string;
+  comprovantes?: string[];
 }
 
 export interface IUpdateAtividadeDTO {
   titulo?: string;
   dataAtividade?: Date;
   horas?: number;
-  tecnologias?: string;
+  tecnologias?: string[];
   descricao?: string;
+  comprovantes?: string[];
 }

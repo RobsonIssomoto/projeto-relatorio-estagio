@@ -35,6 +35,7 @@ const atividadeSchema = new Schema<IAtividade>(
       type: String,
       required: true,
     },
+    comprovantes: [{ type: String }],
   },
   {
     timestamps: true,

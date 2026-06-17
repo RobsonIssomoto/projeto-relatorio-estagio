@@ -1,6 +1,7 @@
 import { Router } from "express";
 import atividadeController from "./atividade.controller.js";
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
+import { uploadComprovantes } from "../../middlewares/upload.middleware.js";
 
 const atividadeRoutes = Router();
 
@@ -31,6 +32,13 @@ atividadeRoutes.get("/:id", authMiddleware, atividadeController.findById);
 // Rota para ADM ou Professor listar tudo
 atividadeRoutes.get("/", authMiddleware, atividadeController.findAll);
 
+// Rota protegida para baixar/visualizar um comprovante específico
+// O ':id' é o id da atividade e o ':nomeArquivo' é o nome da imagem salva
+atividadeRoutes.get("/:id/comprovantes/:nomeArquivo", authMiddleware, atividadeController.baixarComprovante);
+
+// Rota para deletar um comprovante específico
+atividadeRoutes.delete("/:id/comprovantes/:nomeArquivo", authMiddleware, atividadeController.excluirComprovante);
+
 /**
  * @swagger
  * /atividades:
@@ -40,7 +48,7 @@ atividadeRoutes.get("/", authMiddleware, atividadeController.findAll);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -69,10 +77,10 @@ atividadeRoutes.get("/", authMiddleware, atividadeController.findAll);
 
 // Todas as rotas passam pelo "Segurança" (authMiddleware)
 // O aluno cria a atividade e o sistema sabe quem ele é pelo Token
-atividadeRoutes.post("/", authMiddleware, atividadeController.create);
+atividadeRoutes.post("/", authMiddleware, uploadComprovantes.array("comprovantes", 5), atividadeController.create);
 
 // Rotas de edição e exclusão protegidas
-atividadeRoutes.put("/:id", authMiddleware, atividadeController.update);
+atividadeRoutes.put("/:id", authMiddleware, uploadComprovantes.array("comprovantes", 5), atividadeController.update);
 atividadeRoutes.delete("/:id", authMiddleware, atividadeController.delete);
 
 export default atividadeRoutes;
